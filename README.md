@@ -9,5 +9,5 @@ The application will create a game that simulates a snake slithering around a bo
 ## *User Stories*
 - As a user, I want to choose options from a main menu: start game, quit game, or view leaderboard.
 - As a user, I want to play the game by changing the direction of the snake.
-- As a user, I want my score and name to be uploaded on the leaderboard if it is in the top ten best scores.
+- As a user, I want my score and name to be uploaded on the leaderboard (add X to a Y).
 - As a user, I want to check the top ten scores on the leaderboard.
