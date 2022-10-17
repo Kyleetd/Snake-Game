@@ -1,14 +1,13 @@
-# Avatar the Last Airbender Trivia
+# Snake
 
-## *Quiz your Knowledge*
+## *A Game*
 #
 **Project Description**
 
-The application will create a game that quizzes the users' knowledge of the TV show Avatar the Last Airbender (ATLA). Fans of the show can use the quiz for fun or to compete with other fans since their scores will be logged in to a leaderboard.
-The project is of interest to me becuase ATLA was my all-time favourite show growing up. Thus, I think it will be fun to integrate a childhood interest with a professional interest in a technical project.
+The application will create a game that simulates a snake slithering around a board. The user controls the snake's movements and must prevent it from hitting the board boundaries and running into itself. The snake gets longer by eating apples that spawn on random locations on the board. The goal of the game is to eat as many apples as possible.
 
 ## *User Stories*
-- As a user, I want to choose my favourite character to play with
-- As a user, I want to test my knowledge of the show *Avatar the Last Airbender* by selecting answers to questions
-- As a user, I want to play the game until I win by answering all of the questions or lose all my lives
-- As a user, I want to be able to add my score to the leaderboard and compare my score to my previous attempts along with other people's attempts
+- As a user, I want to choose options from a main menu: start game, quit game, or view leaderboard.
+- As a user, I want to play the game by changing the direction of the snake.
+- As a user, I want my score and name to be uploaded on the leaderboard if it is in the top ten best scores.
+- As a user, I want to check the top ten scores on the leaderboard.

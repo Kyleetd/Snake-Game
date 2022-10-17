@@ -2,10 +2,10 @@ package model;
 
 public class Coordinate {
 
-    // fields
     private int coordinateX;
     private int coordinateY;
 
+    // EFFECTS: Instantiates new coordinate.
     public Coordinate(int x, int y) {
         coordinateX = x;
         coordinateY = y;
@@ -19,6 +19,7 @@ public class Coordinate {
         return coordinateY;
     }
 
+    // EFFECTS: Checks if a given coordinate is equal in value to this coordinate.
     public boolean equals(Coordinate c) {
         if (this.getX() == c.getX() && this.getY() == c.getY()) {
             return true;

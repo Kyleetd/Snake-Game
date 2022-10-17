@@ -4,7 +4,6 @@ import java.util.*;
 
 public class SnakeModel {
 
-    // fields
     int boardWidth;
     int boardHeight;
     char snakeDirection;
@@ -13,6 +12,8 @@ public class SnakeModel {
     int score;
     boolean isSnakeAlive;
 
+
+    // EFFECTS: Constructs a snake game and sets score to 0.
     public SnakeModel(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -23,6 +24,12 @@ public class SnakeModel {
 
     }
 
+    // REQUIRES: isSnakeAlive is true.
+    // MODIFIES: This.
+    // EFFECTS: Updates the game state by moving the snake forward by one space in current direction.
+    //          If moving the snake causes it to move off board, sets isSnakeAlive to false.
+    //          If moving the snake causes it to eat an apple, increment score and generate new apple.
+    //          If moving the snake causes it to eat itself, sets isSnakeAlive to false.
     public void updateGame() {
         Coordinate newHeadCoordinate = getNextSnakeCoordinate();
 
@@ -31,14 +38,14 @@ public class SnakeModel {
             return;
         }
 
-        snakeCoordinates.removeLast();
-
         if (ateAnApple(newHeadCoordinate)) {
             snakeCoordinates.addFirst(newHeadCoordinate);
             score += 1;
             createNewApple();
             return;
         }
+
+        snakeCoordinates.removeLast();
 
         if (isCoordinateInSnake(newHeadCoordinate)) {
             isSnakeAlive = false;
@@ -48,6 +55,10 @@ public class SnakeModel {
         snakeCoordinates.addFirst(newHeadCoordinate);
     }
 
+    // MODIFIES: This.
+    // EFFECTS: Updates the snake's direction to match the given direction.
+    //          If the current direction is not perpendicular to the given direction, the direction doesn't change.
+    //          If the given direction is invalid, the direction doesn't change.
     public void changeSnakeDirection(char direction) {
         if (snakeDirection == 'u' && direction == 'd') {
             return;
@@ -67,6 +78,8 @@ public class SnakeModel {
         snakeDirection = direction;
     }
 
+    // EFFECTS: Generates and returns a 2D char array representing the board's current state.
+    //          Places snake and current apple on board.
     public char[][] getGameState() {
         char[][] boardState = new char[boardHeight][boardWidth];
 
@@ -83,7 +96,19 @@ public class SnakeModel {
         return boardState;
     }
 
-    private void createNewSnake() {
+    // EFFECTS: Returns true if the snake is dead.
+    public boolean isGameOver() {
+        return !isSnakeAlive;
+    }
+
+    // EFFECTS: Returns the current score.
+    public int getScore() {
+        return score;
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Creates a new snake and places the head on the center of the board moving right.
+    public void createNewSnake() {
         int middleX = boardWidth / 2;
         int middleY = boardHeight / 2;
 
@@ -95,7 +120,9 @@ public class SnakeModel {
         snakeCoordinates.addLast(new Coordinate(middleX - 2, middleY));
     }
 
-    private void createNewApple() {
+    // MODIFIES: This.
+    // EFFECTS: Generates a new random apple coordinate on the board that isn't inside the snake.
+    public void createNewApple() {
         Random r = new Random();
         int x = r.nextInt(boardWidth);
         int y = r.nextInt(boardHeight);
@@ -110,7 +137,8 @@ public class SnakeModel {
         appleCoordinate = newAppleCoordinate;
     }
 
-    private boolean isCoordinateInSnake(Coordinate c) {
+    // EFFECTS: Returns true if a given coordinate overlaps with any part of the snake.
+    public boolean isCoordinateInSnake(Coordinate c) {
         for (Coordinate coordinate : snakeCoordinates) {
             if (coordinate.equals(c)) {
                 return true;
@@ -119,13 +147,14 @@ public class SnakeModel {
         return false;
     }
 
-    private Coordinate getNextSnakeCoordinate() {
+    // EFFECTS: Generates and returns new snake head based on current snake head and direction.
+    public Coordinate getNextSnakeCoordinate() {
         Coordinate snakeHead = snakeCoordinates.getFirst();
         Coordinate nextSnakeHead = null;
         if (snakeDirection == 'u') {
-            nextSnakeHead = new Coordinate(snakeHead.getX(), snakeHead.getY() + 1);
-        } else if (snakeDirection == 'd') {
             nextSnakeHead = new Coordinate(snakeHead.getX(), snakeHead.getY() - 1);
+        } else if (snakeDirection == 'd') {
+            nextSnakeHead = new Coordinate(snakeHead.getX(), snakeHead.getY() + 1);
         } else if (snakeDirection == 'r') {
             nextSnakeHead = new Coordinate(snakeHead.getX() + 1, snakeHead.getY());
         } else if (snakeDirection == 'l') {
@@ -134,14 +163,16 @@ public class SnakeModel {
         return nextSnakeHead;
     }
 
-    private boolean isCoordinateOnBoard(Coordinate c) {
+    // EFFECTS: Returns true if a given coordinate is on the board.
+    public boolean isCoordinateOnBoard(Coordinate c) {
         if (0 <= c.getX() && c.getX() < boardWidth && 0 <= c.getY() && c.getY() < boardHeight) {
             return true;
         }
         return false;
     }
 
-    private boolean ateAnApple(Coordinate c) {
+    // EFFECTS: Returns true if a given coordinate is the same as the current apple's coordinate.
+    public boolean ateAnApple(Coordinate c) {
         if (appleCoordinate.equals(c)) {
             return true;
         }
