@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,10 +86,10 @@ public class SnakeModelTest {
         mySnakeModel.createNewSnake();
 
         // check if snake is the same
-        List<Coordinate> snake = List.of(
-                new Coordinate(5,5),
-                new Coordinate(4,5),
-                new Coordinate(3,5));
+        List<Coordinate> snake = new ArrayList<>();
+        snake.add(new Coordinate(5,5));
+        snake.add(new Coordinate(4,5));
+        snake.add(new Coordinate(3,5));
 
         int idx = 0;
         for(Coordinate c: mySnakeModel.snakeCoordinates) {
