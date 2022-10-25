@@ -1,24 +1,27 @@
-package controller;
+package ui.controller;
 
-import model.Model;
-import view.ViewCMD;
+import model.LeaderboardModel;
+import model.SnakeModel;
+import ui.view.ViewCMD;
 
 public class ControllerCMD {
 
-    Model model;
     ViewCMD view;
     Boolean isProgramRunning;
     Boolean isGameRunning;
     Boolean isGameOver;
+    SnakeModel snakeModel;
+    LeaderboardModel leaderboardModel;
 
     // EFFECTS: Constructs a controller.
     //          Sets isProgramRunning to be true and isGameRunning and isGameOver to be false.
-    public ControllerCMD(Model model, ViewCMD view) {
-        this.model = model;
+    public ControllerCMD(SnakeModel snakeModel, LeaderboardModel leaderboardModel, ViewCMD view) {
         this.view = view;
         isProgramRunning = true;
         isGameRunning = false;
         isGameOver = false;
+        this.snakeModel = snakeModel;
+        this.leaderboardModel = leaderboardModel;
     }
 
     // EFFECTS: Starts infinite game loop and displays correct output depending on program state.
@@ -43,7 +46,7 @@ public class ControllerCMD {
         if (userInput.equals("s")) {
             isGameRunning = true;
         } else if (userInput.equals("l")) {
-            view.printLeaderBoard(model.getLeaderboardModel().getLeaderBoard());
+            view.printLeaderBoard(leaderboardModel.getLeaderBoard());
         } else if (userInput.equals("q")) {
             isProgramRunning = false;
         } else {
@@ -57,13 +60,13 @@ public class ControllerCMD {
     //          If direction is valid the snake is moved.
     //          Checks if game is over after snake is moved. If it is, isGameOver is set to true;
     private void gameRunningState() {
-        view.printBoard(model.getSnakeModel().getGameState());
+        view.printBoard(snakeModel.getGameState());
         view.printGameInstructions();
         String userInput = view.getUserInput();
         if (userInput.equals("u") || userInput.equals("d") || userInput.equals("r") || userInput.equals("l")) {
-            model.getSnakeModel().changeSnakeDirection(userInput.charAt(0));
-            model.getSnakeModel().updateGame();
-            if (model.getSnakeModel().isGameOver()) {
+            snakeModel.changeSnakeDirection(userInput.charAt(0));
+            snakeModel.updateGame();
+            if (snakeModel.isGameOver()) {
                 isGameOver = true;
             }
         } else {
@@ -77,15 +80,29 @@ public class ControllerCMD {
     //          Resets the snake model so the game can be played again.
     //          Sets isGameRunning and isGameOver to false so program returns to main menu.
     private void gameOverState() {
-        view.printGameOver(model.getSnakeModel().getScore());
+        view.printGameOver(snakeModel.getScore());
         String userInput = view.getUserInput();
 
-        model.getLeaderboardModel().addEntry(userInput, model.getSnakeModel().getScore());
-        view.printLeaderBoard(model.getLeaderboardModel().getLeaderBoard());
+        leaderboardModel.addEntry(userInput, snakeModel.getScore());
+        view.printLeaderBoard(leaderboardModel.getLeaderBoard());
 
-        model.resetSnakeModel();
+        resetSnakeModel();
 
         isGameRunning = false;
         isGameOver = false;
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Resets the snake model.
+    public void resetSnakeModel() {
+        snakeModel = new SnakeModel(10, 10);
+    }
+
+    public SnakeModel getSnakeModel() {
+        return snakeModel;
+    }
+
+    public LeaderboardModel getLeaderboardModel() {
+        return leaderboardModel;
     }
 }

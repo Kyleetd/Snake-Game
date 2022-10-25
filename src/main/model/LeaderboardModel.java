@@ -8,6 +8,7 @@ import java.util.List;
 public class LeaderboardModel {
 
     List<LeaderboardEntry> leaderboard;
+    static int MAX_SIZE = 10;
 
     // EFFECTS: Instantiates new leaderboard object.
     public LeaderboardModel() {
