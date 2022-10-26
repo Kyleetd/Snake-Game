@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,4 +40,19 @@ public class LeaderboardModel {
 
         return lb;
     }
+
+//    public JSONObject toJson() {
+//        JSONObject json = new JSONObject();
+//
+//        for (LeaderboardEntry leaderboardEntry : leaderboard) {
+//
+//        }
+////        json.put("name", name);
+////        json.put("thingies", thingiesToJson());
+//
+//    }
+//
+//    public void loadJson(String str) {
+//
+//    }
 }

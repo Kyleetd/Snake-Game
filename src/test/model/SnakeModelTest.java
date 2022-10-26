@@ -160,6 +160,39 @@ public class SnakeModelTest {
     }
 
     @Test
+    public void createNewAppleInSnakeTest() {
+
+        mySnakeModel.snakeCoordinates.removeFirst();
+        mySnakeModel.snakeCoordinates.removeFirst();
+        mySnakeModel.snakeCoordinates.removeFirst();
+
+
+        char[][] boardState = new char[10][10];
+
+        int currentRow = -1;
+        int currentColumn = -1;
+        for (char[] row: boardState) {
+            currentRow += 1;
+            for (char c : row) {
+                currentColumn += 1;
+                //System.out.println("Here is a pair " + currentColumn + " " + currentRow);
+                mySnakeModel.snakeCoordinates.add(new Coordinate(currentColumn, currentRow));
+            }
+            currentColumn = -1;
+        }
+
+        // removes Coordinate(0, 0)
+        mySnakeModel.snakeCoordinates.removeFirst();
+
+        mySnakeModel.createNewApple();
+        Coordinate appleCoordinate = mySnakeModel.appleCoordinate;
+
+        assertTrue(mySnakeModel.isCoordinateOnBoard(appleCoordinate));
+        assertFalse(mySnakeModel.isCoordinateInSnake(appleCoordinate));
+        assertTrue(appleCoordinate.equals(new Coordinate(0,0)));
+    }
+
+    @Test
     public void createNewSnakeTest() {
         mySnakeModel.createNewSnake();
 
@@ -262,5 +295,10 @@ public class SnakeModelTest {
         mySnakeModel.snakeDirection = 'd';
         mySnakeModel.changeSnakeDirection('r');
         assertEquals('r', mySnakeModel.snakeDirection);
+    }
+
+    @Test
+    public void getScoreTest() {
+        assertEquals(mySnakeModel.getScore(), mySnakeModel.score);
     }
 }

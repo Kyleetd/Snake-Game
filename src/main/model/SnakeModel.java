@@ -22,6 +22,18 @@ public class SnakeModel {
         score = 0;
         isSnakeAlive = true;
 
+        char[][] boardState = new char[10][10];
+
+        int currentRow = -1;
+        int currentColumn = -1;
+        for (char[] row: boardState) {
+            currentRow += 1;
+            for (char c : row) {
+                currentColumn += 1;
+                System.out.println("Here is a pair " + currentColumn + " " + currentRow);
+            }
+            currentColumn = -1;
+        }
     }
 
     // REQUIRES: isSnakeAlive is true.
@@ -175,4 +187,12 @@ public class SnakeModel {
     public boolean ateAnApple(Coordinate c) {
         return appleCoordinate.equals(c);
     }
+
+//    public void toJson() {
+//
+//    }
+//
+//    public void loadJson(String str) {
+//
+//    }
 }
