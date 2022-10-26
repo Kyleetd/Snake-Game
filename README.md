@@ -11,5 +11,5 @@ The application will create a game that simulates a snake slithering around a bo
 - As a user, I want to play the game by changing the direction of the snake.
 - As a user, I want my score and name to be uploaded on the leaderboard (add X to a Y).
 - As a user, I want to check the top ten scores on the leaderboard.
-- As a user, I want to be able to save my score to the leaderboard.
-- - As a user, I want to be able to view my previous scores on the leaderboard.
+- As a user, I want to be able to save the status of the game.
+- - As a user, I want to be able to view the previous state of the game.

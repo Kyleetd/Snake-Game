@@ -20,6 +20,84 @@ public class SnakeModelTest {
     }
 
     @Test
+    public void SnakeModelTest() {
+        assertEquals(10, mySnakeModel.boardWidth);
+        assertEquals(10, mySnakeModel.boardHeight);
+        Coordinate headCoordinate = new Coordinate(4, 4);
+        assertTrue(mySnakeModel.snakeCoordinates.getFirst().equals(headCoordinate));
+        assertEquals(0, mySnakeModel.score);
+        assertTrue(mySnakeModel.isSnakeAlive);
+    }
+
+    @Test
+    public void updateGameValidMoveNoApple() {
+        Coordinate nextHeadCoordinate = mySnakeModel.getNextSnakeCoordinate();
+
+        mySnakeModel.appleCoordinate = new Coordinate(1, 1);
+
+        mySnakeModel.updateGame();
+
+        Coordinate newTail = mySnakeModel.snakeCoordinates.getLast();
+        Coordinate newHead = mySnakeModel.snakeCoordinates.getFirst();
+
+        assertEquals(0, mySnakeModel.score);
+        assertTrue(nextHeadCoordinate.equals(newHead));
+        assertEquals(4, newTail.getY());
+        assertEquals(3, newTail.getX());
+    }
+
+    @Test
+    public void updateGameHitRightWall() {
+        mySnakeModel.updateGame(); // 5
+        mySnakeModel.updateGame(); // 6
+        mySnakeModel.updateGame(); // 7
+        mySnakeModel.updateGame(); // 8
+        mySnakeModel.updateGame(); //9
+        assertTrue(mySnakeModel.isSnakeAlive);
+        mySnakeModel.updateGame();
+        assertFalse(mySnakeModel.isSnakeAlive);
+    }
+
+    @Test
+    public void updateGameEatApple() {
+        Coordinate nextHeadCoordinate = mySnakeModel.getNextSnakeCoordinate();
+        Coordinate nextTailCoordinate = mySnakeModel.snakeCoordinates.getLast();
+
+        mySnakeModel.appleCoordinate = new Coordinate(5, 4);
+
+        mySnakeModel.updateGame();
+
+        Coordinate newTail = mySnakeModel.snakeCoordinates.getLast();
+        Coordinate newHead = mySnakeModel.snakeCoordinates.getFirst();
+
+        assertEquals(1, mySnakeModel.score);
+        assertTrue(nextHeadCoordinate.equals(newHead));
+        assertTrue(nextTailCoordinate.equals(newTail));
+    }
+
+    @Test
+    public void updateGameEatSelf() {
+
+        mySnakeModel.appleCoordinate = new Coordinate(5, 4);
+        mySnakeModel.updateGame();
+        mySnakeModel.appleCoordinate = new Coordinate(6, 4);
+        mySnakeModel.updateGame();
+
+        mySnakeModel.snakeDirection = 'u';
+        mySnakeModel.updateGame();
+
+        mySnakeModel.snakeDirection = 'l';
+        mySnakeModel.updateGame();
+
+        assertFalse(mySnakeModel.isGameOver());
+
+        mySnakeModel.snakeDirection = 'd';
+        mySnakeModel.updateGame();
+
+        assertTrue(mySnakeModel.isGameOver());
+    }
+
+    @Test
     public void ateAnAppleTest() {
         Coordinate appleCoordinate = new Coordinate(5,5);
         Coordinate notAppleCoordinate = new Coordinate(6,5);
@@ -47,25 +125,25 @@ public class SnakeModelTest {
     @Test
     public void getNextSnakeCoordinateTest() {
         mySnakeModel.snakeDirection = 'r';
-        Coordinate expectedNextRightSnakeHead = new Coordinate(6, 5);
+        Coordinate expectedNextRightSnakeHead = new Coordinate(5, 4);
         assertTrue(mySnakeModel.getNextSnakeCoordinate().equals(expectedNextRightSnakeHead));
 
         mySnakeModel.snakeDirection = 'l';
-        Coordinate expectedNextLeftSnakeHead = new Coordinate(4, 5);
+        Coordinate expectedNextLeftSnakeHead = new Coordinate(3, 4);
         assertTrue(mySnakeModel.getNextSnakeCoordinate().equals(expectedNextLeftSnakeHead));
 
         mySnakeModel.snakeDirection = 'u';
-        Coordinate expectedNextUpSnakeHead = new Coordinate(5, 4);
+        Coordinate expectedNextUpSnakeHead = new Coordinate(4, 3);
         assertTrue(mySnakeModel.getNextSnakeCoordinate().equals(expectedNextUpSnakeHead));
 
         mySnakeModel.snakeDirection = 'd';
-        Coordinate expectedNextDownSnakeHead = new Coordinate(5, 6);
+        Coordinate expectedNextDownSnakeHead = new Coordinate(4, 5);
         assertTrue(mySnakeModel.getNextSnakeCoordinate().equals(expectedNextDownSnakeHead));
     }
 
     @Test
     public void isCoordinateInSnakeTest() {
-        Coordinate snakeCoordinate = new Coordinate(5,5);
+        Coordinate snakeCoordinate = new Coordinate(4,4);
         Coordinate notSnakeCoordinate = new Coordinate(6,5);
 
         assertTrue(mySnakeModel.isCoordinateInSnake(snakeCoordinate));
@@ -87,9 +165,9 @@ public class SnakeModelTest {
 
         // check if snake is the same
         List<Coordinate> snake = new ArrayList<>();
-        snake.add(new Coordinate(5,5));
-        snake.add(new Coordinate(4,5));
-        snake.add(new Coordinate(3,5));
+        snake.add(new Coordinate(4,4));
+        snake.add(new Coordinate(3,4));
+        snake.add(new Coordinate(2,4));
 
         int idx = 0;
         for(Coordinate c: mySnakeModel.snakeCoordinates) {
@@ -117,9 +195,9 @@ public class SnakeModelTest {
         board[0][0] = 'A';
 
         // place snake
-        board[5][5] = 'S';
-        board[5][4] = 'S';
-        board[5][3] = 'S';
+        board[4][4] = 'S';
+        board[4][3] = 'S';
+        board[4][2] = 'S';
 
         char[][] boardState = mySnakeModel.getGameState();
 

@@ -109,8 +109,8 @@ public class SnakeModel {
     // MODIFIES: This.
     // EFFECTS: Creates a new snake and places the head on the center of the board moving right.
     public void createNewSnake() {
-        int middleX = boardWidth / 2;
-        int middleY = boardHeight / 2;
+        int middleX = (boardWidth - 1) / 2;
+        int middleY = (boardHeight - 1) / 2;
 
         // create a snake
         snakeDirection = 'r';
@@ -173,9 +173,6 @@ public class SnakeModel {
 
     // EFFECTS: Returns true if a given coordinate is the same as the current apple's coordinate.
     public boolean ateAnApple(Coordinate c) {
-        if (appleCoordinate.equals(c)) {
-            return true;
-        }
-        return false;
+        return appleCoordinate.equals(c);
     }
 }
