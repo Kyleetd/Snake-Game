@@ -5,10 +5,12 @@ import model.SnakeModel;
 import ui.controller.ControllerCMD;
 import ui.view.ViewCMD;
 
-public class Main {
-    public static void main(String[] args) {
+import java.io.IOException;
 
-        SnakeModel snakeModel = new SnakeModel(10, 10);
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        SnakeModel snakeModel = new SnakeModel();
         LeaderboardModel leaderboardModel = new LeaderboardModel();
         ViewCMD view = new ViewCMD();
         ControllerCMD controller = new ControllerCMD(snakeModel, leaderboardModel, view);

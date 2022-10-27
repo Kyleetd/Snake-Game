@@ -2,9 +2,17 @@ package ui.controller;
 
 import model.LeaderboardModel;
 import model.SnakeModel;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 import ui.view.ViewCMD;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class ControllerCMD {
+
+    public static final String LEADERBOARD_FILE_PATH = "./data/leaderboard.json";
+    public static final String SNAKE_FILE_PATH = "./data/snake.json";
 
     ViewCMD view;
     Boolean isProgramRunning;
@@ -25,8 +33,11 @@ public class ControllerCMD {
     }
 
     // EFFECTS: Starts infinite game loop and displays correct output depending on program state.
+    //          Reads in leaderboard and tries to read in snake if a previous state exists from JSON.
     //          Terminates loop if isProgramRunning is false.
-    public void startMainLoop() {
+    public void startMainLoop() throws IOException {
+        readInLeaderboard();
+        readInSnake();
         while (isProgramRunning) {
             if (!isGameRunning && !isGameOver) {
                 mainMenuState();
@@ -34,6 +45,7 @@ public class ControllerCMD {
                 gameRunningState();
             } else if (isGameRunning && isGameOver) {
                 gameOverState();
+                writeOutLeaderboard(LEADERBOARD_FILE_PATH);
             }
         }
     }
@@ -57,9 +69,10 @@ public class ControllerCMD {
     // MODIFIES: This.
     // EFFECTS: Prints out current state of board.
     //          Reads in new direction from user.
+    //          Every game update, saves new state to JSON if game is not over.
     //          If direction is valid the snake is moved.
-    //          Checks if game is over after snake is moved. If it is, isGameOver is set to true;
-    private void gameRunningState() {
+    //          Checks if game is over after snake is moved. If it is, isGameOver is set to true.
+    private void gameRunningState() throws FileNotFoundException {
         view.printBoard(snakeModel.getGameState());
         view.printGameInstructions();
         String userInput = view.getUserInput();
@@ -68,6 +81,8 @@ public class ControllerCMD {
             snakeModel.updateGame();
             if (snakeModel.isGameOver()) {
                 isGameOver = true;
+            } else {
+                writeOutSnake();
             }
         } else {
             view.printInvalidInput();
@@ -78,8 +93,9 @@ public class ControllerCMD {
     // EFFECTS: Prints game over message and reads in players name from user.
     //          Adds score to leaderboard and prints out the new version of the leaderboard.
     //          Resets the snake model so the game can be played again.
+    //          Writes new snake to JSON so the previous state isn't read in when game starts.
     //          Sets isGameRunning and isGameOver to false so program returns to main menu.
-    private void gameOverState() {
+    private void gameOverState() throws FileNotFoundException {
         view.printGameOver(snakeModel.getScore());
         String userInput = view.getUserInput();
 
@@ -87,6 +103,7 @@ public class ControllerCMD {
         view.printLeaderBoard(leaderboardModel.getLeaderBoard());
 
         resetSnakeModel();
+        writeOutSnake();
 
         isGameRunning = false;
         isGameOver = false;
@@ -95,14 +112,34 @@ public class ControllerCMD {
     // MODIFIES: This.
     // EFFECTS: Resets the snake model.
     public void resetSnakeModel() {
-        snakeModel = new SnakeModel(10, 10);
+        snakeModel = new SnakeModel();
     }
 
-    public SnakeModel getSnakeModel() {
-        return snakeModel;
+    // EFFECTS: Reads in leaderboard from JSON
+    public void readInLeaderboard() throws IOException {
+        JsonReader reader = new JsonReader(LEADERBOARD_FILE_PATH);
+        leaderboardModel.loadJson(reader.read());
     }
 
-    public LeaderboardModel getLeaderboardModel() {
-        return leaderboardModel;
+    // EFFECTS: Stores leaderboard in JSON.
+    public void writeOutLeaderboard(String filePath) throws FileNotFoundException {
+        JsonWriter writer = new JsonWriter(filePath);
+        writer.open();
+        writer.write(leaderboardModel.toJson());
+        writer.close();
+    }
+
+    // EFFECTS: Reads in snake from JSON
+    public void readInSnake() throws IOException {
+        JsonReader reader = new JsonReader(SNAKE_FILE_PATH);
+        snakeModel.loadJson(reader.read());
+    }
+
+    // EFFECTS: Stores snake in JSON.
+    public void writeOutSnake() throws FileNotFoundException {
+        JsonWriter writer = new JsonWriter(SNAKE_FILE_PATH);
+        writer.open();
+        writer.write(snakeModel.toJson());
+        writer.close();
     }
 }

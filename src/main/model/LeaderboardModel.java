@@ -41,18 +41,23 @@ public class LeaderboardModel {
         return lb;
     }
 
-//    public JSONObject toJson() {
-//        JSONObject json = new JSONObject();
-//
-//        for (LeaderboardEntry leaderboardEntry : leaderboard) {
-//
-//        }
-////        json.put("name", name);
-////        json.put("thingies", thingiesToJson());
-//
-//    }
-//
-//    public void loadJson(String str) {
-//
-//    }
+    // EFFECTS: Converts leaderboard to JSON.
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        for (LeaderboardEntry leaderboardEntry : leaderboard) {
+            json.put(leaderboardEntry.name, leaderboardEntry.score);
+        }
+
+        return json;
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Loads leaderboard state from JSON into This.
+    public void loadJson(JSONObject json) {
+        for (String name: json.keySet()) {
+            int score = json.getInt(name);
+            addEntry(name, score);
+        }
+    }
 }

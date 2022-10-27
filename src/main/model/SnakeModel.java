@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.*;
 
 public class SnakeModel {
 
-    int boardWidth;
-    int boardHeight;
+    public static final int BOARD_WIDTH = 15;
+    public static final int BOARD_HEIGHT = 15;
+
     char snakeDirection;
     Deque<Coordinate> snakeCoordinates;
     Coordinate appleCoordinate;
@@ -14,26 +18,11 @@ public class SnakeModel {
 
 
     // EFFECTS: Constructs a snake game and sets score to 0.
-    public SnakeModel(int boardWidth, int boardHeight) {
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
+    public SnakeModel() {
         createNewSnake();
         createNewApple();
         score = 0;
         isSnakeAlive = true;
-
-        char[][] boardState = new char[10][10];
-
-        int currentRow = -1;
-        int currentColumn = -1;
-        for (char[] row: boardState) {
-            currentRow += 1;
-            for (char c : row) {
-                currentColumn += 1;
-                System.out.println("Here is a pair " + currentColumn + " " + currentRow);
-            }
-            currentColumn = -1;
-        }
     }
 
     // REQUIRES: isSnakeAlive is true.
@@ -93,7 +82,7 @@ public class SnakeModel {
     // EFFECTS: Generates and returns a 2D char array representing the board's current state.
     //          Places snake and current apple on board.
     public char[][] getGameState() {
-        char[][] boardState = new char[boardHeight][boardWidth];
+        char[][] boardState = new char[BOARD_HEIGHT][BOARD_WIDTH];
 
         for (char[] row: boardState) {
             Arrays.fill(row, ' ');
@@ -121,8 +110,8 @@ public class SnakeModel {
     // MODIFIES: This.
     // EFFECTS: Creates a new snake and places the head on the center of the board moving right.
     public void createNewSnake() {
-        int middleX = (boardWidth - 1) / 2;
-        int middleY = (boardHeight - 1) / 2;
+        int middleX = BOARD_WIDTH / 2;
+        int middleY = BOARD_HEIGHT / 2;
 
         // create a snake
         snakeDirection = 'r';
@@ -136,14 +125,14 @@ public class SnakeModel {
     // EFFECTS: Generates a new random apple coordinate on the board that isn't inside the snake.
     public void createNewApple() {
         Random r = new Random();
-        int x = r.nextInt(boardWidth);
-        int y = r.nextInt(boardHeight);
+        int x = r.nextInt(BOARD_WIDTH);
+        int y = r.nextInt(BOARD_HEIGHT);
 
         Coordinate newAppleCoordinate = new Coordinate(x, y);
 
         while (isCoordinateInSnake(newAppleCoordinate)) {
-            x = r.nextInt(boardWidth);
-            y = r.nextInt(boardHeight);
+            x = r.nextInt(BOARD_WIDTH);
+            y = r.nextInt(BOARD_HEIGHT);
             newAppleCoordinate = new Coordinate(x, y);
         }
         appleCoordinate = newAppleCoordinate;
@@ -177,7 +166,7 @@ public class SnakeModel {
 
     // EFFECTS: Returns true if a given coordinate is on the board.
     public boolean isCoordinateOnBoard(Coordinate c) {
-        if (0 <= c.getX() && c.getX() < boardWidth && 0 <= c.getY() && c.getY() < boardHeight) {
+        if (0 <= c.getX() && c.getX() < BOARD_WIDTH && 0 <= c.getY() && c.getY() < BOARD_HEIGHT) {
             return true;
         }
         return false;
@@ -188,11 +177,69 @@ public class SnakeModel {
         return appleCoordinate.equals(c);
     }
 
-//    public void toJson() {
-//
-//    }
-//
-//    public void loadJson(String str) {
-//
-//    }
+
+    // EFFECTS: Saves a snake game to JSON.
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        // add score
+        json.put("score", score);
+
+        // add apple
+        String appleString = appleCoordinate.getX() + "," + appleCoordinate.getY();
+        json.put("apple", appleString);
+
+        // add snake
+        JSONArray jsonArray = new JSONArray();
+        for (Coordinate coordinate : snakeCoordinates) {
+            String snakeCoordinate = coordinate.getX() + "," + coordinate.getY();
+            jsonArray.put(snakeCoordinate);
+        }
+        json.put("snake", jsonArray);
+
+        // add direction
+        json.put("direction", String.valueOf(snakeDirection));
+
+        return json;
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: loads a snake game from JSON.
+    public void loadJson(JSONObject json) {
+        try {
+            // load score
+            int score = json.getInt("score");
+            this.score = score;
+
+            // load apple
+            String appleAsString = json.getString("apple");
+            this.appleCoordinate = stringToCoordinate(appleAsString);
+
+            // load snake
+            JSONArray snakeAsJsonArray = json.getJSONArray("snake");
+            Deque<Coordinate> snakeCoordinates = new LinkedList<Coordinate>();
+            for (int i = 0; i < snakeAsJsonArray.length(); i++) {
+                String snakeCoordinateAsString = snakeAsJsonArray.getString(i);
+                snakeCoordinates.addLast(stringToCoordinate(snakeCoordinateAsString));
+            }
+            this.snakeCoordinates = snakeCoordinates;
+
+            // load direction
+            String snakeDirection = json.getString("direction");
+            this.snakeDirection = snakeDirection.charAt(0);
+
+        } catch (Exception e) {
+            System.out.println("No valid game state saved.");
+        }
+    }
+
+
+    // EFFECTS: Takes a string in form "x,y", splits it at the comma, converts both parts to integers.
+    //          Returns both integers as a Coordinate.
+    public Coordinate stringToCoordinate(String s) {
+        String[] asArray = s.split(",");
+        int x = Integer.parseInt(asArray[0]);
+        int y = Integer.parseInt(asArray[1]);
+        return new Coordinate(x, y);
+    }
 }
