@@ -300,6 +300,11 @@ public class SnakeModelTest {
         mySnakeModel.snakeDirection = 'd';
         mySnakeModel.changeSnakeDirection('r');
         assertEquals('r', mySnakeModel.snakeDirection);
+
+        // invalid direction
+        mySnakeModel.snakeDirection = 'r';
+        mySnakeModel.changeSnakeDirection('k');
+        assertEquals('r', mySnakeModel.snakeDirection);
     }
 
     @Test
