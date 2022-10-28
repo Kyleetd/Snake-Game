@@ -178,7 +178,7 @@ public class SnakeModel {
     }
 
 
-    // EFFECTS: Saves a snake game to JSON.
+    // EFFECTS: Saves a snake game to a JSON Object.
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
 
@@ -204,7 +204,7 @@ public class SnakeModel {
     }
 
     // MODIFIES: This.
-    // EFFECTS: loads a snake game from JSON.
+    // EFFECTS: loads a snake game from a JSON Object.
     public void loadJson(JSONObject json) {
         try {
             // load score
@@ -241,5 +241,11 @@ public class SnakeModel {
         int x = Integer.parseInt(asArray[0]);
         int y = Integer.parseInt(asArray[1]);
         return new Coordinate(x, y);
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: sets score (for testing).
+    public void setScore(int score) {
+        this.score = score;
     }
 }

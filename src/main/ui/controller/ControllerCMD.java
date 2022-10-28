@@ -36,7 +36,7 @@ public class ControllerCMD {
     //          Reads in leaderboard and tries to read in snake if a previous state exists from JSON.
     //          Terminates loop if isProgramRunning is false.
     public void startMainLoop() throws IOException {
-        readInLeaderboard();
+        readInLeaderboard(LEADERBOARD_FILE_PATH);
         readInSnake();
         while (isProgramRunning) {
             if (!isGameRunning && !isGameOver) {
@@ -116,8 +116,8 @@ public class ControllerCMD {
     }
 
     // EFFECTS: Reads in leaderboard from JSON
-    public void readInLeaderboard() throws IOException {
-        JsonReader reader = new JsonReader(LEADERBOARD_FILE_PATH);
+    public void readInLeaderboard(String filePath) throws IOException {
+        JsonReader reader = new JsonReader(filePath);
         leaderboardModel.loadJson(reader.read());
     }
 

@@ -60,4 +60,15 @@ public class LeaderboardModel {
             addEntry(name, score);
         }
     }
+
+    // EFFECTS: Returns leaderboard (for testing).
+    public List<LeaderboardEntry> getLeaderBoardForTests() {
+        System.out.println(leaderboard);
+        return leaderboard;
+    }
+
+    // EFFECTS: Clears leaderboard (for testing).
+    public void clearLeaderboard() {
+        leaderboard.clear();
+    }
 }

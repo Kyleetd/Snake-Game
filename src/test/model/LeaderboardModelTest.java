@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LeaderboardModelTest {
 
-    public static final String LEADERBOARD_FILE_PATH = "./data/leaderboardTest.json";
-
     LeaderboardModel leaderboard;
 
     @BeforeEach

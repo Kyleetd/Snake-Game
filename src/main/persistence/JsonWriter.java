@@ -1,10 +1,18 @@
 package persistence;
 
+import model.Coordinate;
+import model.LeaderboardModel;
+import model.LeaderboardEntry;
+import model.SnakeModel;
+
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+// DISCLAIMER: I used the class JsonWriter from example JsonSerializationDemo on github to build this class.
+//             https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 
 public class JsonWriter {
     private PrintWriter writer;
