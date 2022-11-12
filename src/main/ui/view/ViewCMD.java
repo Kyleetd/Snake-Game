@@ -66,5 +66,6 @@ public class ViewCMD {
         System.out.println("d -> down");
         System.out.println("r -> right");
         System.out.println("l -> left");
+        System.out.println("q -> quit");
     }
 }

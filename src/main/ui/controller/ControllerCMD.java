@@ -20,6 +20,7 @@ public class ControllerCMD {
     Boolean isGameOver;
     SnakeModel snakeModel;
     LeaderboardModel leaderboardModel;
+    String snakeJsonFilePath;
 
     // EFFECTS: Constructs a controller.
     //          Sets isProgramRunning to be true and isGameRunning and isGameOver to be false.
@@ -52,11 +53,11 @@ public class ControllerCMD {
 
     // MODIFIES: This.
     // EFFECTS: Displays main menu and sets game state according to the user's input.
-    private void mainMenuState() {
+    private void mainMenuState() throws IOException {
         view.printMainMenu();
         String userInput = view.getUserInput();
         if (userInput.equals("s")) {
-            isGameRunning = true;
+            reloadPreviousState();
         } else if (userInput.equals("l")) {
             view.printLeaderBoard(leaderboardModel.getLeaderBoard());
         } else if (userInput.equals("q")) {
@@ -84,8 +85,24 @@ public class ControllerCMD {
             } else {
                 writeOutSnake();
             }
+        } else if (userInput.equals("q")) {
+            quitGame();
+            isProgramRunning = false;
         } else {
             view.printInvalidInput();
+        }
+    }
+
+    private void quitGame() throws FileNotFoundException {
+        System.out.println("Would you like to save your game? Type 'y' for yes or 'n' for no.");
+        String userInput = view.getUserInput();
+        if (userInput.equals("y")) {
+            writeOutSnake();
+        } else if (userInput.equals("n")) {
+            resetSnakeModel();
+            writeOutSnake();
+        } else {
+            System.out.println("Invalid input. Type 'y' for yes or 'n' for no.");
         }
     }
 
@@ -107,6 +124,19 @@ public class ControllerCMD {
 
         isGameRunning = false;
         isGameOver = false;
+    }
+
+    private void reloadPreviousState() throws IOException {
+        System.out.println("Would you like to reload your previous game? Type 'y' for yes or 'n' for no.");
+        String userInput = view.getUserInput();
+        if (userInput.equals("y")) {
+            isGameRunning = true;
+            readInSnake();
+        } else if (userInput.equals("n")) {
+            isGameRunning = true;
+        } else {
+            System.out.println("Invalid input. Type 'y' for yes or 'n' for no.");
+        }
     }
 
     // MODIFIES: This.
