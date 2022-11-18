@@ -2,8 +2,9 @@ package ui;
 
 import model.LeaderboardModel;
 import model.SnakeModel;
-import ui.controller.ControllerCMD;
-import ui.view.ViewCMD;
+import persistence.JsonReader;
+import ui.controller.ControllerGUI;
+import ui.view.ViewGUI.ViewGUI;
 
 import java.io.IOException;
 
@@ -12,9 +13,20 @@ public class Main {
 
         SnakeModel snakeModel = new SnakeModel();
         LeaderboardModel leaderboardModel = new LeaderboardModel();
-        ViewCMD view = new ViewCMD();
-        ControllerCMD controller = new ControllerCMD(snakeModel, leaderboardModel, view);
 
-        controller.startMainLoop();
+        JsonReader reader = new JsonReader("./data/leaderboard.json");
+        leaderboardModel.loadJson(reader.read());
+
+        ViewGUI viewGUI = new ViewGUI(snakeModel);
+        new ControllerGUI(snakeModel, leaderboardModel, viewGUI);
+
+        viewGUI.setVisible(true);
+
+//        SnakeModel snakeModel = new SnakeModel();
+//        ViewCMD view = new ViewCMD();
+//        RenderSnake render = new RenderSnake(snakeModel);
+//        ControllerCMD controller = new ControllerCMD(snakeModel, leaderboardModel, view, render);
+//
+//        controller.startMainLoop();
     }
 }

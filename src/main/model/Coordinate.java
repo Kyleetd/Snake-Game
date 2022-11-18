@@ -1,6 +1,8 @@
 package model;
 
 public class Coordinate {
+    // size of cell in screen coordinates
+    public static final int CELL_PIXELS = 30;
 
     private int coordinateX;
     private int coordinateY;

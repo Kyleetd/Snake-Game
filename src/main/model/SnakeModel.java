@@ -102,11 +102,6 @@ public class SnakeModel {
         return !isSnakeAlive;
     }
 
-    // EFFECTS: Returns the current score.
-    public int getScore() {
-        return score;
-    }
-
     // MODIFIES: This.
     // EFFECTS: Creates a new snake and places the head on the center of the board moving right.
     public void createNewSnake() {
@@ -248,4 +243,30 @@ public class SnakeModel {
     public void setScore(int score) {
         this.score = score;
     }
+
+    // EFFECTS: gets apple coordinate
+    public Coordinate getAppleCoordinate() {
+        return appleCoordinate;
+    }
+
+    // EFFECTS: Returns the current score.
+    public int getScore() {
+        return score;
+    }
+
+    // EFFECTS: Returns the current snake head direction.
+    public char getSnakeDirection() {
+        return snakeDirection;
+    }
+
+    // EFFECTS: Returns the current snake.
+    public Deque<Coordinate> getSnake() {
+        return snakeCoordinates;
+    }
+
+    // EFFECTS: Returns true if snake is alive.
+    public Boolean getIsSnakeAlive() {
+        return isSnakeAlive;
+    }
 }
+

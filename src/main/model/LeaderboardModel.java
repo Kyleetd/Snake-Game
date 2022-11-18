@@ -26,7 +26,7 @@ public class LeaderboardModel {
 
         Collections.sort(leaderboard, Comparator.comparingInt(l -> l.score));
         Collections.reverse(leaderboard);
-        if (leaderboard.size() > 10) {
+        if (leaderboard.size() > MAX_SIZE) {
             leaderboard.remove(leaderboard.size() - 1);
         }
     }

@@ -20,7 +20,6 @@ public class ControllerCMD {
     Boolean isGameOver;
     SnakeModel snakeModel;
     LeaderboardModel leaderboardModel;
-    String snakeJsonFilePath;
 
     // EFFECTS: Constructs a controller.
     //          Sets isProgramRunning to be true and isGameRunning and isGameOver to be false.
