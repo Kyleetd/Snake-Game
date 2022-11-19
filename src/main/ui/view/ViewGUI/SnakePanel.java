@@ -18,7 +18,7 @@ public class SnakePanel extends JPanel {
     }
 
     // EFFECTS: creates 15-by-15 tile grid
-    private void initializeGrid() {
+    public void initializeGrid() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 Tile newTile = new Tile();

@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 public class ViewGUI extends JFrame {
 
     SnakeModel snakeModel;
-
     SnakePanel snakePanel;
     SidePanel sidePanel;
 
@@ -53,6 +52,7 @@ public class ViewGUI extends JFrame {
         // EFFECTS: moves snake on SnakePanel when key event is detected
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
+                System.out.println("up");
                 snakeModel.changeSnakeDirection('u');
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 snakeModel.changeSnakeDirection('d');
@@ -61,6 +61,9 @@ public class ViewGUI extends JFrame {
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 snakeModel.changeSnakeDirection('r');
             }
+
+            snakePanel.revalidate();
+            snakePanel.repaint();
         }
     }
 }
