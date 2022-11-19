@@ -46,13 +46,12 @@ public class ViewGUI extends JFrame {
         return sidePanel.leaderboardPanel;
     }
 
-    // handles snake moving
     public class KeyArrowListener extends KeyAdapter {
 
-        // EFFECTS: moves snake on SnakePanel when key event is detected
+        // MODIFIES: SnakeModel, SnakePanel
+        // EFFECTS: Moves snake on SnakePanel when key event is detected by updating direction in Snake Model
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
-                System.out.println("up");
                 snakeModel.changeSnakeDirection('u');
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 snakeModel.changeSnakeDirection('d');

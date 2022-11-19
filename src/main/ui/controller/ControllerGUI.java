@@ -68,11 +68,9 @@ public class ControllerGUI {
         viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
     }
 
+    // EFFECTS: Creates a timer that executes game updates at time intervals of GAME_SPEED.
+    //          When this timer is running the game is running.
     private void createGameTimer() {
-        /*
-        Creates a timer that executes game updates at time intervals of GAME_SPEED.
-        When this timer is running the game is running.
-        */
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -96,9 +94,9 @@ public class ControllerGUI {
         }, this.GAME_SPEED, this.GAME_SPEED);
     }
 
-    // EFFECTS: starts game when start button is pressed
     class StartButtonListener implements ActionListener {
 
+        // EFFECTS: starts game when start button is pressed
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().disableStartButton();
             viewGUI.getControlPanel().enableStopButton();
@@ -108,10 +106,9 @@ public class ControllerGUI {
         }
     }
 
-    // handles stop button
     class StopButtonListener implements ActionListener {
 
-        // EFFECTS: ends game when stop button is pressed
+        // EFFECTS: Stops games, disables start button, and enables start button
         public void actionPerformed(ActionEvent e) {
             timer.cancel();
             viewGUI.getControlPanel().enableStartButton();
@@ -120,10 +117,9 @@ public class ControllerGUI {
         }
     }
 
-    // handles quit button
     class QuitButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // EFFECTS: Prompts user to save game when quit button is pressed
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().loadSaveMenu();
             viewGUI.getControlPanel().revalidate();
@@ -131,16 +127,18 @@ public class ControllerGUI {
         }
     }
 
-    // handles load yes button
     class LoadYesButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // EFFECTS: Loads snake game from JSON file
         public void actionPerformed(ActionEvent e) {
             JsonReader jsonReader = new JsonReader(SNAKE_FILE_PATH);
             try {
                 snakeModel.loadJson(jsonReader.read());
                 updateGame();
                 viewGUI.getControlPanel().loadMainMenu();
+                viewGUI.getControlPanel().enableStartButton();
+                viewGUI.getControlPanel().disableStopButton();
+                viewGUI.getControlPanel().enableQuitButton();
                 viewGUI.getControlPanel().revalidate();
                 viewGUI.getControlPanel().repaint();
             } catch (IOException ex) {
@@ -149,21 +147,17 @@ public class ControllerGUI {
         }
     }
 
-    // handles load no button
     class LoadNoButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // EFFECTS: Loads main menu (start, stop, quit)
         public void actionPerformed(ActionEvent e) {
-            viewGUI.getControlPanel().loadMainMenu();
-            viewGUI.getControlPanel().revalidate();
-            viewGUI.getControlPanel().repaint();
+            loadMainMenu();
         }
     }
 
-    // handles load no button
     class SaveYesButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // EFFECTS: Writes snake game to JSON, quits application
         public void actionPerformed(ActionEvent e) {
             JsonWriter jsonWriter = new JsonWriter(SNAKE_FILE_PATH);
             try {
@@ -177,19 +171,20 @@ public class ControllerGUI {
         }
     }
 
-    // handles load no button
     class SaveNoButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // EFFECTS: Quits application
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
 
-    // handles load no button
     class SubmitNameButtonListener implements ActionListener {
 
-        // EFFECTS: quits application
+        // MODIFIES: LeaderboardModel, LeaderboardPanel
+        // EFFECTS: Takes name and scores, adds as entry to leaderboard, then writes new leaderboard to JSON
+        //          Resets snake game and updates snake panel
+        //          Loads main menu (start, stop, quit)
         public void actionPerformed(ActionEvent e) {
             String name = viewGUI.getControlPanel().getNameFromTextField();
             int score = snakeModel.getScore();
@@ -203,25 +198,36 @@ public class ControllerGUI {
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-
-            snakeModel = new SnakeModel();
-            viewGUI.getSnakePanel().updateGrid(snakeModel.getGameState());
-            JsonWriter jsonWriterSnake = new JsonWriter(SNAKE_FILE_PATH);
-            try {
-                jsonWriterSnake.open();
-                jsonWriterSnake.write(snakeModel.toJson());
-                jsonWriterSnake.close();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            viewGUI.getControlPanel().loadMainMenu();
-            viewGUI.getControlPanel().enableStartButton();
-            viewGUI.getControlPanel().disableStopButton();
-            viewGUI.getControlPanel().enableQuitButton();
-            viewGUI.getControlPanel().revalidate();
-            viewGUI.getControlPanel().repaint();
-            viewGUI.getControlPanel().destroyTextField();
+            resetSnakeGameAndPanel();
         }
+    }
+
+    // MODIFIES: SnakeModel, SnakePanel, This
+    // EFFECTS: Resets snake game and updates snake panel
+    //          Writes new snake game to JSON so old version is over-written
+    public void resetSnakeGameAndPanel() {
+        snakeModel = new SnakeModel();
+        viewGUI.getSnakePanel().updateGrid(snakeModel.getGameState());
+        JsonWriter jsonWriterSnake = new JsonWriter(SNAKE_FILE_PATH);
+        try {
+            jsonWriterSnake.open();
+            jsonWriterSnake.write(snakeModel.toJson());
+            jsonWriterSnake.close();
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+        loadMainMenu();
+    }
+
+    // EFFECTS: Loads main menu (start, stop, quit)
+    public void loadMainMenu() {
+        viewGUI.getControlPanel().loadMainMenu();
+        viewGUI.getControlPanel().enableStartButton();
+        viewGUI.getControlPanel().disableStopButton();
+        viewGUI.getControlPanel().enableQuitButton();
+        viewGUI.getControlPanel().revalidate();
+        viewGUI.getControlPanel().repaint();
+        viewGUI.getControlPanel().destroyTextField();
+
     }
 }

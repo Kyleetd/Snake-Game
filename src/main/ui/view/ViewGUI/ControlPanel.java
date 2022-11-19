@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-// displays and controls buttons on side panel
+// Displays and controls buttons on side panel
 public class ControlPanel extends JPanel {
 
     JButton startButton;
@@ -52,6 +52,7 @@ public class ControlPanel extends JPanel {
 
     }
 
+    // EFFECTS: Displays Start, Stop, and Quit buttons
     public void loadMainMenu() {
         this.removeAll();
         this.add(startButton);
@@ -59,6 +60,7 @@ public class ControlPanel extends JPanel {
         this.add(quitButton);
     }
 
+    // EFFECTS: Displays SaveLabel with Yes and No buttons
     public void loadSaveMenu() {
         this.removeAll();
         this.add(saveLabel);
@@ -66,6 +68,7 @@ public class ControlPanel extends JPanel {
         this.add(saveNoButton);
     }
 
+    // EFFECTS: Displays LoadLabel with Yes and No buttons
     public void loadLoadMenu() {
         this.removeAll();
         this.add(loadLabel);
@@ -73,6 +76,7 @@ public class ControlPanel extends JPanel {
         this.add(loadNoButton);
     }
 
+    // EFFECTS: Displays EnterNameLabel with a text field and Submit button
     public void loadLeaderBoardMenu() {
         this.removeAll();
         this.add(enterNameLabel);
@@ -116,41 +120,47 @@ public class ControlPanel extends JPanel {
         quitButton.setEnabled(true);
     }
 
+    // EFFECTS: returns user's name from user input
     public String getNameFromTextField() {
         return textField.getText();
     }
 
-    // EFFECTS: registers when start button pressed
+    // EFFECTS: registers when Start button is pressed
     public void addStartButtonListener(ActionListener listenForStartButton) {
         startButton.addActionListener(listenForStartButton);
     }
 
-    // EFFECTS: registers when stop button pressed
+    // EFFECTS: registers when Stop button is pressed
     public void addStopButtonListener(ActionListener listenForStopButton) {
         stopButton.addActionListener(listenForStopButton);
     }
 
-    // EFFECTS: registers when quit button pressed
+    // EFFECTS: registers when Quit button is pressed
     public void addQuitButtonListener(ActionListener listenForQuitButton) {
         quitButton.addActionListener(listenForQuitButton);
     }
 
+    // EFFECTS: registers when Yes button is pressed
     public void addSaveYesButtonListener(ActionListener listenForSaveYesButton) {
         saveYesButton.addActionListener(listenForSaveYesButton);
     }
 
+    // EFFECTS: registers when No button is pressed
     public void addSaveNoButtonListener(ActionListener listenForSaveNoButton) {
         saveNoButton.addActionListener(listenForSaveNoButton);
     }
 
+    // EFFECTS: registers when Yes button is pressed
     public void addLoadYesButtonListener(ActionListener listenForLoadYesButton) {
         loadYesButton.addActionListener(listenForLoadYesButton);
     }
 
+    // EFFECTS: registers when No button is pressed
     public void addLoadNoButtonListener(ActionListener listenForLoadNoButton) {
         loadNoButton.addActionListener(listenForLoadNoButton);
     }
 
+    // EFFECTS: registers when Submit button is pressed
     public void addSubmitNameButtonListener(ActionListener listenSubmitNameButton) {
         submitNameButton.addActionListener(listenSubmitNameButton);
     }

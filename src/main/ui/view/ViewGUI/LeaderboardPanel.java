@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-// displays side panel with buttons and leaderboard
+// Displays and updates leaderboard
 public class LeaderboardPanel extends JPanel {
 
     JLabel title;
@@ -25,6 +25,7 @@ public class LeaderboardPanel extends JPanel {
         initializeLeaderboard();
     }
 
+    // EFFECTS: Creates Leaderboard in LeaderboardPanel
     public void initializeLeaderboard() {
         for (int i = 0; i < leaderboard.length; i++) {
             leaderboard[i] = new JLabel();
@@ -32,6 +33,7 @@ public class LeaderboardPanel extends JPanel {
         }
     }
 
+    // MODIFIES: This
     // EFFECTS: Adds leaderboard entries to entries panel
     public void updateLeaderboard(List<String> leaderboardEntries) {
         for (int i = 0; i < leaderboardEntries.size(); i++) {
