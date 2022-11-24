@@ -1,4 +1,4 @@
-package ui.view.ViewGUI;
+package ui.view.viewgui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ public class Tile extends JPanel {
 
     public Tile() {
         this.setBackground(Color.white);
-        this.setBorder(BorderFactory.createLineBorder(Color.black));
+//        this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.setFocusable(false);
     }
 

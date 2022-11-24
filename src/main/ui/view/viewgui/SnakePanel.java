@@ -1,12 +1,7 @@
-package ui.view.ViewGUI;
-
-import model.SnakeModel;
-import persistence.JsonWriter;
-import ui.controller.ControllerGUI;
+package ui.view.viewgui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 
 // Displays snake game
 public class SnakePanel extends JPanel {
@@ -15,8 +10,9 @@ public class SnakePanel extends JPanel {
 
     public SnakePanel() {
         this.setLayout(new GridLayout(15, 15));
+        this.setBackground(Color.white);
         initializeGrid();
-        this.setFocusable(true);
+        this.setFocusable(false);
     }
 
     // MODIFIES: This

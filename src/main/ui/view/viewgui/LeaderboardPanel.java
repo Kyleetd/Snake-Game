@@ -1,7 +1,4 @@
-package ui.view.ViewGUI;
-
-import model.LeaderboardEntry;
-import model.LeaderboardModel;
+package ui.view.viewgui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +11,11 @@ public class LeaderboardPanel extends JPanel {
     JLabel[] leaderboard;
 
     public LeaderboardPanel() {
+        this.setLayout(new GridLayout(11, 1));
+        this.setBackground(Color.white);
         this.setFocusable(false);
 
-        this.setLayout(new GridLayout(11, 1));
-
-        title = new JLabel("Leaderboard");
+        title = new JLabel("Leaderboard", SwingConstants.CENTER);
         leaderboard = new JLabel[10];
 
         this.add(title);
@@ -28,7 +25,7 @@ public class LeaderboardPanel extends JPanel {
     // EFFECTS: Creates Leaderboard in LeaderboardPanel
     public void initializeLeaderboard() {
         for (int i = 0; i < leaderboard.length; i++) {
-            leaderboard[i] = new JLabel();
+            leaderboard[i] = new JLabel("", SwingConstants.CENTER);
             this.add(leaderboard[i]);
         }
     }

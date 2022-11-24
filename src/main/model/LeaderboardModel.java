@@ -52,7 +52,7 @@ public class LeaderboardModel {
         return json;
     }
 
-    // MODIFIES: This.
+    // MODIFIES: This
     // EFFECTS: Loads leaderboard state from JSON into This.
     public void loadJson(JSONObject json) {
         for (String name: json.keySet()) {

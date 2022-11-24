@@ -1,7 +1,6 @@
-package ui.view.ViewGUI;
+package ui.view.viewgui;
 
 import model.SnakeModel;
-import ui.controller.ControllerGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +22,7 @@ public class ViewGUI extends JFrame {
         this.setUndecorated(true);
         this.setLayout(new BorderLayout());
         this.setFocusable(true);
+        this.setBackground(Color.white);
 
         addKeyListener(new KeyArrowListener());
 
