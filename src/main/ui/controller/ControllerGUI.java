@@ -6,6 +6,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.view.viewgui.ViewGUI;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -29,16 +30,19 @@ public class ControllerGUI {
 
     Timer timer;
 
+    char newDirection;
+
     public ControllerGUI(SnakeModel snakeModel, LeaderboardModel leaderboardModel, ViewGUI viewGUI) throws IOException {
         this.snakeModel = snakeModel;
         this.leaderboardModel = leaderboardModel;
         this.viewGUI = viewGUI;
 
-        //readInLeaderboardModelFromFile();
+        newDirection = snakeModel.getSnakeDirection();
 
         updateGame();
         updateLeaderboard();
 
+        // ADD BUTTON LISTENERS
         viewGUI.getControlPanel().addStartButtonListener(new StartButtonListener());
         viewGUI.getControlPanel().addStopButtonListener(new StopButtonListener());
         viewGUI.getControlPanel().addQuitButtonListener(new QuitButtonListener());
@@ -49,8 +53,41 @@ public class ControllerGUI {
         viewGUI.getControlPanel().addSubmitNameButtonListener(new SubmitNameButtonListener());
         viewGUI.getControlPanel().addSaveToLeaderboardButtonListener(new SaveToLeaderboardButtonListener());
         viewGUI.getControlPanel().addDontSaveToLeaderboardButtonListener(new DontSaveToLeaderboardButtonListener());
-        viewGUI.getControlPanel().addLoadButtonListener(new LoadButtonListener());
-        viewGUI.getControlPanel().addDontLoadButtonListener(new DontLoadButtonListener());
+        viewGUI.getLeaderboardPanel().addLoadButtonListener(new LoadButtonListener());
+        viewGUI.getLeaderboardPanel().addDontLoadButtonListener(new DontLoadButtonListener());
+
+        // ADDING KEY BINDINGS
+        // up
+        viewGUI.getControlPanel()
+                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("UP"),"up");
+        viewGUI.getControlPanel()
+                .getActionMap()
+                .put("up", new UpAction());
+
+        // down
+        viewGUI.getControlPanel()
+                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("DOWN"),"down");
+        viewGUI.getControlPanel()
+                .getActionMap()
+                .put("down", new DownAction());
+
+        // left
+        viewGUI.getControlPanel()
+                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("LEFT"),"left");
+        viewGUI.getControlPanel()
+                .getActionMap()
+                .put("left", new LeftAction());
+
+        // right
+        viewGUI.getControlPanel()
+                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("RIGHT"),"right");
+        viewGUI.getControlPanel()
+                .getActionMap()
+                .put("right", new RightAction());
     }
 
     // MODIFIES: SnakePanel
@@ -60,7 +97,7 @@ public class ControllerGUI {
     }
 
     // MODIFIES: LeaderboardPanel
-    // EFFECTS: Updates leaderboard with scores
+    // EFFECTS: Updates Leaderboard Panel with scores
     private void updateLeaderboard() {
         viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
     }
@@ -105,6 +142,7 @@ public class ControllerGUI {
             @Override
             public void run() {
                 try {
+                    snakeModel.changeSnakeDirection(newDirection);
                     snakeModel.updateGame();
                     updateGame();
                     // stop timer if snake is dead
@@ -118,6 +156,46 @@ public class ControllerGUI {
                 }
             }
         }, this.GAME_SPEED, this.GAME_SPEED);
+    }
+
+    private class UpAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            char currentDirection = snakeModel.getSnakeDirection();
+            if (currentDirection != 'd') {
+                newDirection = 'u';
+            }
+        }
+    }
+
+    private class DownAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            char currentDirection = snakeModel.getSnakeDirection();
+            if (currentDirection != 'u') {
+                newDirection = 'd';
+            }
+        }
+    }
+
+    private class LeftAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            char currentDirection = snakeModel.getSnakeDirection();
+            if (currentDirection != 'r') {
+                newDirection = 'l';
+            }
+        }
+    }
+
+    private class RightAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            char currentDirection = snakeModel.getSnakeDirection();
+            if (currentDirection != 'l') {
+                newDirection = 'r';
+            }
+        }
     }
 
     class StartButtonListener implements ActionListener {
@@ -144,7 +222,6 @@ public class ControllerGUI {
         // EFFECTS: Prompts user to save game when quit button is pressed
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().loadSaveMenu();
-            viewGUI.getControlPanel().reloadPanel();
         }
     }
 
@@ -159,8 +236,6 @@ public class ControllerGUI {
             }
             updateGame();
             viewGUI.getControlPanel().loadMainMenu();
-            viewGUI.getControlPanel().updateButtonsGameStopped();
-            viewGUI.getControlPanel().reloadPanel();
         }
     }
 
@@ -169,8 +244,6 @@ public class ControllerGUI {
         // EFFECTS: Loads main menu (start, stop, quit) with start & quit button enabled
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().loadMainMenu();
-            viewGUI.getControlPanel().updateButtonsGameStopped();
-            viewGUI.getControlPanel().reloadPanel();
         }
     }
 
@@ -196,16 +269,16 @@ public class ControllerGUI {
         // EFFECTS: Loads leaderboard menu where user can input name
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().loadLeaderBoardMenu();
-            viewGUI.getControlPanel().reloadPanel();
         }
     }
 
     class DontSaveToLeaderboardButtonListener implements ActionListener {
 
-        // EFFECTS: Quits application
+        // EFFECTS: Resets snake game.
         public void actionPerformed(ActionEvent e) {
             resetSnakeGame();
-            System.exit(0);
+            viewGUI.getControlPanel().loadMainMenu();
+            viewGUI.getControlPanel().disableStopButton();
         }
     }
 
@@ -218,10 +291,9 @@ public class ControllerGUI {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            updateLeaderboard();
-
-            viewGUI.getControlPanel().loadLoadMenu();
-            viewGUI.getControlPanel().disableStopButton();
+            viewGUI.getLeaderboardPanel().loadLeaderboard();
+            viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
+            viewGUI.getControlPanel().updateButtonsGameStopped();
         }
     }
 
@@ -236,11 +308,9 @@ public class ControllerGUI {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            updateLeaderboard();
-            viewGUI.getControlPanel().reloadPanel();
+            viewGUI.getLeaderboardPanel().loadLeaderboard();
 
-            viewGUI.getControlPanel().loadLoadMenu();
-            viewGUI.getControlPanel().disableStopButton();
+            viewGUI.getControlPanel().updateButtonsGameStopped();
         }
     }
 
@@ -254,10 +324,13 @@ public class ControllerGUI {
             String name = viewGUI.getControlPanel().getNameFromTextField();
             int score = snakeModel.getScore();
             leaderboardModel.addEntry(name, score);
-            viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
             writeOutLeaderboardModelToFile();
+            viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
+
             resetSnakeGame();
-            System.exit(0);
+
+            viewGUI.getControlPanel().loadMainMenu();
+            viewGUI.getControlPanel().disableStopButton();
         }
     }
 
@@ -269,7 +342,6 @@ public class ControllerGUI {
         writeOutSnakeModelToFile();
         viewGUI.getControlPanel().loadMainMenu();
         viewGUI.getControlPanel().updateButtonsGameStopped();
-        viewGUI.getControlPanel().reloadPanel();
         updateGame();
     }
 }

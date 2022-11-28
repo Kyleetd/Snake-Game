@@ -12,7 +12,7 @@ public class Main {
 
         SnakeModel snakeModel = new SnakeModel();
         LeaderboardModel leaderboardModel = new LeaderboardModel();
-        ViewGUI viewGUI = new ViewGUI(snakeModel);
+        ViewGUI viewGUI = new ViewGUI();
         new ControllerGUI(snakeModel, leaderboardModel, viewGUI);
 
         viewGUI.setVisible(true);

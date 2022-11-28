@@ -1,20 +1,17 @@
 package ui.view.viewgui;
 
 import model.SnakeModel;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import javax.swing.*;
 
 // Creates main JFrame
 public class ViewGUI extends JFrame {
 
-    SnakeModel snakeModel;
     SnakePanel snakePanel;
     SidePanel sidePanel;
 
-    public ViewGUI(SnakeModel snakeModel) {
+    public ViewGUI() {
         this.setTitle("Snake");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -24,9 +21,6 @@ public class ViewGUI extends JFrame {
         this.setFocusable(true);
         this.setBackground(Color.white);
 
-        addKeyListener(new KeyArrowListener());
-
-        this.snakeModel = snakeModel;
         this.snakePanel = new SnakePanel();
         this.sidePanel = new SidePanel();
 
@@ -46,23 +40,4 @@ public class ViewGUI extends JFrame {
         return sidePanel.leaderboardPanel;
     }
 
-    public class KeyArrowListener extends KeyAdapter {
-
-        // MODIFIES: SnakeModel, SnakePanel
-        // EFFECTS: Moves snake on SnakePanel when key event is detected by updating direction in Snake Model
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_UP) {
-                snakeModel.changeSnakeDirection('u');
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                snakeModel.changeSnakeDirection('d');
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                snakeModel.changeSnakeDirection('l');
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                snakeModel.changeSnakeDirection('r');
-            }
-
-            snakePanel.revalidate();
-            snakePanel.repaint();
-        }
-    }
 }

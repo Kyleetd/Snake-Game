@@ -27,14 +27,9 @@ public class ControlPanel extends JPanel {
     JButton saveToLeaderboardButton;
     JButton dontSaveToLeaderboardButton;
 
-    JLabel loadLeaderboardLabel;
-    JButton loadButton;
-    JButton dontLoadButton;
-
     public ControlPanel() {
         this.setLayout(new GridLayout(3, 1));
         this.setBackground(Color.white);
-        this.setFocusable(false);
 
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
@@ -56,14 +51,9 @@ public class ControlPanel extends JPanel {
         saveToLeaderboardButton = new JButton("Save");
         dontSaveToLeaderboardButton = new JButton("Don't Save");
 
-        loadLeaderboardLabel = new JLabel("Save Score to Leaderboard?", SwingConstants.CENTER);
-        loadButton = new JButton("Load");
-        dontLoadButton = new JButton("Don't Load");
-
-        loadLeaderboardOption();
-
-//        loadLoadMenu();
-//        disableStopButton();
+        loadLoadMenu();
+        disableStopButton();
+        disableStartButton();
     }
 
     public void reloadPanel() {
@@ -75,12 +65,14 @@ public class ControlPanel extends JPanel {
         disableStartButton();
         enableStopButton();
         disableQuitButton();
+        reloadPanel();
     }
 
     public void updateButtonsGameStopped() {
         enableStartButton();
         disableStopButton();
         enableQuitButton();
+        reloadPanel();
     }
 
     // EFFECTS: Displays Start, Stop, and Quit buttons
@@ -89,6 +81,7 @@ public class ControlPanel extends JPanel {
         this.add(startButton);
         this.add(stopButton);
         this.add(quitButton);
+        reloadPanel();
     }
 
     // EFFECTS: Displays SaveLabel with Yes and No buttons
@@ -97,6 +90,7 @@ public class ControlPanel extends JPanel {
         this.add(saveLabel);
         this.add(saveYesButton);
         this.add(saveNoButton);
+        reloadPanel();
     }
 
     // EFFECTS: Displays LoadLabel with Yes and No buttons
@@ -105,6 +99,7 @@ public class ControlPanel extends JPanel {
         this.add(loadLabel);
         this.add(loadYesButton);
         this.add(loadNoButton);
+        reloadPanel();
     }
 
     // EFFECTS: Displays EnterNameLabel with a text field and Submit button
@@ -113,6 +108,7 @@ public class ControlPanel extends JPanel {
         this.add(enterNameLabel);
         this.add(textField);
         this.add(submitNameButton);
+        reloadPanel();
     }
 
     // EFFECTS: Displays submitToLeaderboardLabel with save or don't save options
@@ -121,50 +117,49 @@ public class ControlPanel extends JPanel {
         this.add(submitToLeaderboardLabel);
         this.add(saveToLeaderboardButton);
         this.add(dontSaveToLeaderboardButton);
-    }
-
-    // EFFECTS: Displays loadLeaderboardLabel with load or don't load options
-    public void loadLeaderboardOption() {
-        this.removeAll();
-        this.add(loadLeaderboardLabel);
-        this.add(loadButton);
-        this.add(dontLoadButton);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: disables start button
     public void disableStartButton() {
         startButton.setEnabled(false);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: disables stop button
     public void disableStopButton() {
         stopButton.setEnabled(false);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: disables quit button
     public void disableQuitButton() {
         quitButton.setEnabled(false);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: enables start button
     public void enableStartButton() {
         startButton.setEnabled(true);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: enables stop button
     public void enableStopButton() {
         stopButton.setEnabled(true);
+        reloadPanel();
     }
 
     // MODIFIES: this
     // EFFECTS: enables quit button
     public void enableQuitButton() {
         quitButton.setEnabled(true);
+        reloadPanel();
     }
 
     // EFFECTS: returns user's name from user input
@@ -220,15 +215,5 @@ public class ControlPanel extends JPanel {
     // EFFECTS: registers when Don't Save button is pressed
     public void addDontSaveToLeaderboardButtonListener(ActionListener listenDontSaveToLeaderboardButton) {
         dontSaveToLeaderboardButton.addActionListener(listenDontSaveToLeaderboardButton);
-    }
-
-    // EFFECTS: registers when Load button is pressed
-    public void addLoadButtonListener(ActionListener listenLoadButton) {
-        loadButton.addActionListener(listenLoadButton);
-    }
-
-    // EFFECTS: registers when Don't Load button is pressed
-    public void addDontLoadButtonListener(ActionListener listenDontLoadButton) {
-        dontLoadButton.addActionListener(listenDontLoadButton);
     }
 }

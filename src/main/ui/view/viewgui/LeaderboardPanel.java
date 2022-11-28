@@ -2,6 +2,7 @@ package ui.view.viewgui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 // Displays and updates leaderboard
@@ -9,6 +10,11 @@ public class LeaderboardPanel extends JPanel {
 
     JLabel title;
     JLabel[] leaderboard;
+    JButton viewLeaderboardButton;
+
+    JLabel loadLeaderboardLabel;
+    JButton loadButton;
+    JButton dontLoadButton;
 
     public LeaderboardPanel() {
         this.setLayout(new GridLayout(11, 1));
@@ -18,16 +24,37 @@ public class LeaderboardPanel extends JPanel {
         title = new JLabel("Leaderboard", SwingConstants.CENTER);
         leaderboard = new JLabel[10];
 
+        loadLeaderboardLabel = new JLabel("Load Previous Leaderboard?", SwingConstants.CENTER);
+        loadButton = new JButton("Load");
+        dontLoadButton = new JButton("Don't Load");
+
+        loadLeaderboardOption();
+    }
+
+    // EFFECTS: Displays Leaderboard in LeaderboardPanel
+    public void loadLeaderboard() {
+        this.removeAll();
         this.add(title);
         initializeLeaderboard();
     }
 
+    // EFFECTS: Displays loadLeaderboardLabel with load or don't load options
+    public void loadLeaderboardOption() {
+        this.removeAll();
+        this.add(loadLeaderboardLabel);
+        this.add(loadButton);
+        this.add(dontLoadButton);
+        reloadLeaderboard();
+    }
+
+    // MODIFIES: This
     // EFFECTS: Creates Leaderboard in LeaderboardPanel
     public void initializeLeaderboard() {
         for (int i = 0; i < leaderboard.length; i++) {
             leaderboard[i] = new JLabel("", SwingConstants.CENTER);
             this.add(leaderboard[i]);
         }
+        reloadLeaderboard();
     }
 
     // MODIFIES: This
@@ -36,5 +63,26 @@ public class LeaderboardPanel extends JPanel {
         for (int i = 0; i < leaderboardEntries.size(); i++) {
             leaderboard[i].setText(leaderboardEntries.get(i));
         }
+        reloadLeaderboard();
+    }
+
+    public void reloadLeaderboard() {
+        this.revalidate();
+        this.repaint();
+    }
+
+    // EFFECTS: registers when View Leaderboard button is pressed
+    public void addViewLeaderboardButtonListener(ActionListener listenViewLeaderboardButton) {
+        viewLeaderboardButton.addActionListener(listenViewLeaderboardButton);
+    }
+
+    // EFFECTS: registers when Load button is pressed
+    public void addLoadButtonListener(ActionListener listenLoadButton) {
+        loadButton.addActionListener(listenLoadButton);
+    }
+
+    // EFFECTS: registers when Don't Load button is pressed
+    public void addDontLoadButtonListener(ActionListener listenDontLoadButton) {
+        dontLoadButton.addActionListener(listenDontLoadButton);
     }
 }

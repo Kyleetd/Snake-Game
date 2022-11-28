@@ -7,6 +7,8 @@ import java.awt.*;
 // displays side panel with buttons and leaderboard
 public class SidePanel extends JPanel {
 
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+
     ControlPanel controlPanel;
     LeaderboardPanel leaderboardPanel;
 
