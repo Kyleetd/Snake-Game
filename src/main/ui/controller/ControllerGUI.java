@@ -1,5 +1,7 @@
 package ui.controller;
 
+import model.Event;
+import model.EventLog;
 import model.LeaderboardModel;
 import model.SnakeModel;
 import persistence.JsonReader;
@@ -7,6 +9,7 @@ import persistence.JsonWriter;
 import ui.view.viewgui.ViewGUI;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -16,7 +19,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-// Handles GUI button and key events
+// Handles GUI button and key events.
 public class ControllerGUI {
 
     public static final String SNAKE_FILE_PATH = "./data/snake.json";
@@ -56,8 +59,12 @@ public class ControllerGUI {
         viewGUI.getLeaderboardPanel().addLoadButtonListener(new LoadButtonListener());
         viewGUI.getLeaderboardPanel().addDontLoadButtonListener(new DontLoadButtonListener());
 
-        // ADDING KEY BINDINGS
-        // up
+        // ADD KEY BINDINGS
+        addKeyBindings();
+    }
+
+    public void addKeyBindings() {
+
         viewGUI.getControlPanel()
                 .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("UP"),"up");
@@ -65,7 +72,6 @@ public class ControllerGUI {
                 .getActionMap()
                 .put("up", new UpAction());
 
-        // down
         viewGUI.getControlPanel()
                 .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("DOWN"),"down");
@@ -73,7 +79,6 @@ public class ControllerGUI {
                 .getActionMap()
                 .put("down", new DownAction());
 
-        // left
         viewGUI.getControlPanel()
                 .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("LEFT"),"left");
@@ -81,32 +86,35 @@ public class ControllerGUI {
                 .getActionMap()
                 .put("left", new LeftAction());
 
-        // right
         viewGUI.getControlPanel()
                 .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("RIGHT"),"right");
         viewGUI.getControlPanel()
                 .getActionMap()
                 .put("right", new RightAction());
+
     }
 
-    // MODIFIES: SnakePanel
-    // EFFECTS: Updates game with current snake and apple position on the SnakePanel
+    // MODIFIES: SnakePanel.
+    // EFFECTS: Updates game with current snake and apple position on the SnakePanel.
     private void updateGame() {
         viewGUI.getSnakePanel().updateGrid(snakeModel.getGameState());
     }
 
-    // MODIFIES: LeaderboardPanel
+    // MODIFIES: LeaderboardPanel.
     // EFFECTS: Updates Leaderboard Panel with scores
     private void updateLeaderboard() {
         viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
     }
 
+    // MODIFIES: SnakeModel.
+    // EFFECTS: Reads snakeModel from json file.
     private void readInSnakeModelFromFile() throws IOException {
         JsonReader jsonReader = new JsonReader(SNAKE_FILE_PATH);
         snakeModel.loadJson(jsonReader.read());
     }
 
+    // EFFECTS: Writes snakeModel to json file.
     private void writeOutSnakeModelToFile() {
         JsonWriter jsonWriter = new JsonWriter(SNAKE_FILE_PATH);
         try {
@@ -118,11 +126,14 @@ public class ControllerGUI {
         }
     }
 
+    // MODIFIES: LeaderboardModel.
+    // EFFECTS: Reads LeaderboardModel from json file.
     private void readInLeaderboardModelFromFile() throws IOException {
         JsonReader jsonReader = new JsonReader(LEADERBOARD_FILE_PATH);
         leaderboardModel.loadJson(jsonReader.read());
     }
 
+    // EFFECTS: Writes leaderboardModel to json file.
     private void writeOutLeaderboardModelToFile() {
         JsonWriter jsonWriterLeaderboard = new JsonWriter(LEADERBOARD_FILE_PATH);
         try {
@@ -158,7 +169,28 @@ public class ControllerGUI {
         }, this.GAME_SPEED, this.GAME_SPEED);
     }
 
+    // MODIFIES: SnakeModel, SnakePanel, This.
+    // EFFECTS: Resets snake game and updates snake panel
+    //          Writes new snake game to JSON so old version is over-written
+    public void resetSnakeGame() {
+        snakeModel = new SnakeModel();
+        writeOutSnakeModelToFile();
+        viewGUI.getControlPanel().loadMainMenu();
+        viewGUI.getControlPanel().updateButtonsGameStopped();
+        updateGame();
+    }
+
+    // EFFECTS: Prints EventLog to console.
+    public void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.toString() + "\n\n");
+        }
+    }
+
     private class UpAction extends AbstractAction {
+
+        // MODIFIES: This.
+        // EFFECTS: Sets newDirection to up.
         @Override
         public void actionPerformed(ActionEvent e) {
             char currentDirection = snakeModel.getSnakeDirection();
@@ -169,6 +201,9 @@ public class ControllerGUI {
     }
 
     private class DownAction extends AbstractAction {
+
+        // MODIFIES: This.
+        // EFFECTS: Sets newDirection to down.
         @Override
         public void actionPerformed(ActionEvent e) {
             char currentDirection = snakeModel.getSnakeDirection();
@@ -179,6 +214,9 @@ public class ControllerGUI {
     }
 
     private class LeftAction extends AbstractAction {
+
+        // MODIFIES: This.
+        // EFFECTS: Sets newDirection to left.
         @Override
         public void actionPerformed(ActionEvent e) {
             char currentDirection = snakeModel.getSnakeDirection();
@@ -189,6 +227,9 @@ public class ControllerGUI {
     }
 
     private class RightAction extends AbstractAction {
+
+        // MODIFIES: This.
+        // EFFECTS: Sets newDirection to right.
         @Override
         public void actionPerformed(ActionEvent e) {
             char currentDirection = snakeModel.getSnakeDirection();
@@ -235,6 +276,7 @@ public class ControllerGUI {
                 throw new RuntimeException(ex);
             }
             updateGame();
+            newDirection = snakeModel.getSnakeDirection();
             viewGUI.getControlPanel().loadMainMenu();
         }
     }
@@ -252,6 +294,7 @@ public class ControllerGUI {
         // EFFECTS: Writes snake game to JSON, quits application
         public void actionPerformed(ActionEvent e) {
             writeOutSnakeModelToFile();
+            printLog(EventLog.getInstance());
             System.exit(0);
         }
     }
@@ -260,6 +303,7 @@ public class ControllerGUI {
 
         // EFFECTS: Quits application
         public void actionPerformed(ActionEvent e) {
+            printLog(EventLog.getInstance());
             System.exit(0);
         }
     }
@@ -299,15 +343,10 @@ public class ControllerGUI {
 
     class DontLoadButtonListener implements ActionListener {
 
-        // EFFECTS: Clears then loads leaderboard, loads main menu
+        // EFFECTS: Clears Leaderboard, updates Leaderboard Json file, loads Leaderboard Panel, and loads main menu.
         public void actionPerformed(ActionEvent e) {
             leaderboardModel.clearLeaderboard();
             writeOutLeaderboardModelToFile();
-            try {
-                readInLeaderboardModelFromFile();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
             viewGUI.getLeaderboardPanel().loadLeaderboard();
 
             viewGUI.getControlPanel().updateButtonsGameStopped();
@@ -323,7 +362,7 @@ public class ControllerGUI {
         public void actionPerformed(ActionEvent e) {
             String name = viewGUI.getControlPanel().getNameFromTextField();
             int score = snakeModel.getScore();
-            leaderboardModel.addEntry(name, score);
+            leaderboardModel.addEntry(name, score, false);
             writeOutLeaderboardModelToFile();
             viewGUI.getLeaderboardPanel().updateLeaderboard(leaderboardModel.getLeaderBoard());
 
@@ -332,16 +371,5 @@ public class ControllerGUI {
             viewGUI.getControlPanel().loadMainMenu();
             viewGUI.getControlPanel().disableStopButton();
         }
-    }
-
-    // MODIFIES: SnakeModel, SnakePanel, This
-    // EFFECTS: Resets snake game and updates snake panel
-    //          Writes new snake game to JSON so old version is over-written
-    public void resetSnakeGame() {
-        snakeModel = new SnakeModel();
-        writeOutSnakeModelToFile();
-        viewGUI.getControlPanel().loadMainMenu();
-        viewGUI.getControlPanel().updateButtonsGameStopped();
-        updateGame();
     }
 }

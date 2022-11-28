@@ -1,5 +1,6 @@
 package model;
 
+// Models and returns the size of a coordinate in the snake game.
 public class Coordinate {
     // size of cell in screen coordinates
     public static final int CELL_PIXELS = 30;

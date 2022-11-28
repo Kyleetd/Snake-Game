@@ -1,10 +1,5 @@
 package persistence;
 
-import model.Coordinate;
-import model.LeaderboardModel;
-import model.LeaderboardEntry;
-import model.SnakeModel;
-
 import org.json.JSONObject;
 
 import java.io.File;
@@ -23,27 +18,27 @@ public class JsonWriter {
         this.destination = destination;
     }
 
-    // MODIFIES: this
-    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
-    // be opened for writing
+    // MODIFIES: This.
+    // EFFECTS: Opens writer; throws FileNotFoundException if destination file cannot
+    //          be opened for writing.
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes JSON to file
+    // MODIFIES: This.
+    // EFFECTS: Writes JSON to file.
     public void write(JSONObject json) {
         saveToFile(json.toString(4));
     }
 
-    // MODIFIES: this
-    // EFFECTS: closes writer
+    // MODIFIES: This.
+    // EFFECTS: Closes writer.
     public void close() {
         writer.close();
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes string to file
+    // MODIFIES: This.
+    // EFFECTS: Writes string to file.
     private void saveToFile(String json) {
         writer.print(json);
     }

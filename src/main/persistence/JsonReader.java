@@ -20,20 +20,20 @@ import java.util.stream.Stream;
 public class JsonReader {
     private String filePath;
 
-    // EFFECTS: constructs reader to read from source file
+    // EFFECTS: Constructs reader to read from source file.
     public JsonReader(String source) {
         this.filePath = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
-    // throws IOException if an error occurs reading data from file
+    // EFFECTS: Reads workroom from file and returns it;
+    //          throws IOException if an error occurs reading data from file.
     public JSONObject read() throws IOException {
         String jsonData = readFile(filePath);
         JSONObject jsonObject = new JSONObject(jsonData);
         return jsonObject;
     }
 
-    // EFFECTS: reads source file as string and returns it
+    // EFFECTS: Reads source file as string and returns it.
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 

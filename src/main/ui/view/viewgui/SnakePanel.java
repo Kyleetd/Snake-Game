@@ -3,7 +3,7 @@ package ui.view.viewgui;
 import javax.swing.*;
 import java.awt.*;
 
-// Displays snake game
+// Displays snake game.
 public class SnakePanel extends JPanel {
 
     Tile[][] grid = new Tile[15][15];
@@ -15,8 +15,8 @@ public class SnakePanel extends JPanel {
         this.setFocusable(false);
     }
 
-    // MODIFIES: This
-    // EFFECTS: Creates 15-by-15 tile grid
+    // MODIFIES: This.
+    // EFFECTS: Creates 15-by-15 tile grid.
     public void initializeGrid() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
@@ -27,8 +27,8 @@ public class SnakePanel extends JPanel {
         }
     }
 
-    // MODIFIES: This
-    // EFFECTS: Places snake and apple on snake panel grid according to game state
+    // MODIFIES: This.
+    // EFFECTS: Places snake and apple on snake panel grid according to game state.
     public void updateGrid(char[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {

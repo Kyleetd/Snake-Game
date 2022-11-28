@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
-// Creates main JFrame
+// Creates main JFrame.
 public class ViewGUI extends JFrame {
 
     SnakePanel snakePanel;

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.*;
 
+// Models a snake games with coordinates, an apple, and a score.
 public class SnakeModel {
 
     public static final int BOARD_WIDTH = 15;
@@ -108,7 +109,6 @@ public class SnakeModel {
         int middleX = BOARD_WIDTH / 2;
         int middleY = BOARD_HEIGHT / 2;
 
-        // create a snake
         snakeDirection = 'r';
         snakeCoordinates = new LinkedList<Coordinate>();
         snakeCoordinates.addLast(new Coordinate(middleX, middleY));
@@ -199,7 +199,7 @@ public class SnakeModel {
     }
 
     // MODIFIES: This.
-    // EFFECTS: loads a snake game from a JSON Object.
+    // EFFECTS: Loads a snake game from a JSON Object.
     public void loadJson(JSONObject json) {
         try {
             // load score
@@ -239,12 +239,12 @@ public class SnakeModel {
     }
 
     // MODIFIES: This.
-    // EFFECTS: sets score (for testing).
+    // EFFECTS: Sets score (for testing).
     public void setScore(int score) {
         this.score = score;
     }
 
-    // EFFECTS: gets apple coordinate
+    // EFFECTS: Gets apple coordinate.
     public Coordinate getAppleCoordinate() {
         return appleCoordinate;
     }

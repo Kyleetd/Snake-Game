@@ -3,7 +3,7 @@ package ui.view.viewgui;
 import javax.swing.*;
 import java.awt.*;
 
-// Represents a tile or grid on the SnakePanel
+// Represents a tile or grid on the SnakePanel.
 public class Tile extends JPanel {
 
     public Tile() {
@@ -12,17 +12,17 @@ public class Tile extends JPanel {
         this.setFocusable(false);
     }
 
-    // EFFECTS: Makes snake tiles green
+    // EFFECTS: Makes snake tiles green.
     public void setToSnake() {
         this.setBackground(Color.green);
     }
 
-    // EFFECTS: Makes non-occupied tiles white
+    // EFFECTS: Makes non-occupied tiles white.
     public void setToEmpty() {
         this.setBackground(Color.white);
     }
 
-    // EFFECTS: Makes apple tiles red
+    // EFFECTS: Makes apple tiles red.
     public void setToApple() {
         this.setBackground(Color.red);
     }

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+// Stores Entries as a list
 public class LeaderboardModel {
 
     List<LeaderboardEntry> leaderboard;
@@ -20,7 +21,8 @@ public class LeaderboardModel {
     // MODIFIES: This.
     // EFFECTS: Creates a new leaderboard entry and adds it to leaderboard.
     //          Sorts leaderboard and removes worst score if it contains more than 10 entries.
-    public void addEntry(String name, int score) {
+    //          Adds Event to EventLog.
+    public void addEntry(String name, int score, boolean fromJSON) {
         LeaderboardEntry newEntry = new LeaderboardEntry(name, score);
         leaderboard.add(newEntry);
 
@@ -28,6 +30,10 @@ public class LeaderboardModel {
         Collections.reverse(leaderboard);
         if (leaderboard.size() > MAX_SIZE) {
             leaderboard.remove(leaderboard.size() - 1);
+        }
+
+        if (!fromJSON) {
+            EventLog.getInstance().logEvent(new Event("INFO: " + name + "'s score was added to leaderboard."));
         }
     }
 
@@ -37,7 +43,6 @@ public class LeaderboardModel {
         for (LeaderboardEntry entry: leaderboard) {
             lb.add(entry.name + ": " + entry.score);
         }
-
         return lb;
     }
 
@@ -48,17 +53,18 @@ public class LeaderboardModel {
         for (LeaderboardEntry leaderboardEntry : leaderboard) {
             json.put(leaderboardEntry.name, leaderboardEntry.score);
         }
-
         return json;
     }
 
-    // MODIFIES: This
+    // MODIFIES: This.
     // EFFECTS: Loads leaderboard state from JSON into This.
+    //          Adds Event to EventLog.
     public void loadJson(JSONObject json) {
         for (String name: json.keySet()) {
             int score = json.getInt(name);
-            addEntry(name, score);
+            addEntry(name, score, true);
         }
+        EventLog.getInstance().logEvent(new Event("INFO: Leaderboard was loaded"));
     }
 
     // EFFECTS: Returns leaderboard (for testing).
@@ -67,8 +73,11 @@ public class LeaderboardModel {
         return leaderboard;
     }
 
-    // EFFECTS: Clears leaderboard (for testing).
+    // MODIFIES: This.
+    // EFFECTS: Clears leaderboard.
+    //          Adds Event to EventLog.
     public void clearLeaderboard() {
         leaderboard.clear();
+        EventLog.getInstance().logEvent(new Event("INFO: Leaderboard was cleared"));
     }
 }

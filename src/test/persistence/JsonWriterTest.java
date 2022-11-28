@@ -27,8 +27,8 @@ public class JsonWriterTest {
         mySnakeModel.setScore(1000);
 
         myLeaderboard = new LeaderboardModel();
-        myLeaderboard.addEntry("Kylee", 15000);
-        myLeaderboard.addEntry("Lex", 1);
+        myLeaderboard.addEntry("Kylee", 15000, true);
+        myLeaderboard.addEntry("Lex", 1, true);
     }
 
     @Test

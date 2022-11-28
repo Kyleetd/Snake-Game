@@ -23,37 +23,37 @@ public class LeaderboardModelTest {
 
     @Test
     public void addEntryTest() {
-        leaderboard.addEntry("Test", 1);
+        leaderboard.addEntry("Test", 1, true);
         assertEquals(1, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 2);
+        leaderboard.addEntry("Test", 2, true);
         assertEquals(2, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 3);
+        leaderboard.addEntry("Test", 3, true);
         assertEquals(3, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 4);
+        leaderboard.addEntry("Test", 4, true);
         assertEquals(4, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 5);
+        leaderboard.addEntry("Test", 5, true);
         assertEquals(5, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 6);
+        leaderboard.addEntry("Test", 6, true);
         assertEquals(6, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 7);
+        leaderboard.addEntry("Test", 7, true);
         assertEquals(7, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 8);
+        leaderboard.addEntry("Test", 8, true);
         assertEquals(8, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 9);
+        leaderboard.addEntry("Test", 9, true);
         assertEquals(9, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 10);
+        leaderboard.addEntry("Test", 10, true);
         assertEquals(10, leaderboard.leaderboard.size());
 
-        leaderboard.addEntry("Test", 11);
+        leaderboard.addEntry("Test", 11, true);
         assertEquals(10, leaderboard.leaderboard.size());
 
         int score = 11;
@@ -65,8 +65,8 @@ public class LeaderboardModelTest {
 
     @Test
     public void getLeaderboardTest() {
-        leaderboard.addEntry("Test1", 1);
-        leaderboard.addEntry("Test2", 2);
+        leaderboard.addEntry("Test1", 1, true);
+        leaderboard.addEntry("Test2", 2, true);
 
         List<String> lb = leaderboard.getLeaderBoard();
         assertEquals(lb.get(0), "Test2: 2");
@@ -75,8 +75,8 @@ public class LeaderboardModelTest {
 
     @Test
     public void toJsonTest() throws IOException {
-        leaderboard.addEntry("Test1", 1);
-        leaderboard.addEntry("Test2", 2);
+        leaderboard.addEntry("Test1", 1, true);
+        leaderboard.addEntry("Test2", 2, true);
 
         JSONObject leaderboardJson = leaderboard.toJson();
 

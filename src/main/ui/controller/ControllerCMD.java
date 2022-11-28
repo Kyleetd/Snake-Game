@@ -92,6 +92,9 @@ public class ControllerCMD {
         }
     }
 
+    // MODIFIES: SnakeModel, This.
+    // EFFECTS: Resets SnakeModel if user input is 'y'.
+    //          Writes snake to json.
     private void quitGame() throws FileNotFoundException {
         System.out.println("Would you like to save your game? Type 'y' for yes or 'n' for no.");
         String userInput = view.getUserInput();
@@ -115,7 +118,7 @@ public class ControllerCMD {
         view.printGameOver(snakeModel.getScore());
         String userInput = view.getUserInput();
 
-        leaderboardModel.addEntry(userInput, snakeModel.getScore());
+        leaderboardModel.addEntry(userInput, snakeModel.getScore(), false);
         view.printLeaderBoard(leaderboardModel.getLeaderBoard());
 
         resetSnakeModel();
@@ -125,6 +128,9 @@ public class ControllerCMD {
         isGameOver = false;
     }
 
+    // MODIFIES: SnakeModel, This.
+    // EFFECTS: Reads in snake position, direction, and apple position if user input is "y"
+    //          Sets GameRunning to true.
     private void reloadPreviousState() throws IOException {
         System.out.println("Would you like to reload your previous game? Type 'y' for yes or 'n' for no.");
         String userInput = view.getUserInput();
@@ -144,7 +150,7 @@ public class ControllerCMD {
         snakeModel = new SnakeModel();
     }
 
-    // EFFECTS: Reads in leaderboard from JSON
+    // EFFECTS: Reads in leaderboard from JSON.
     public void readInLeaderboard(String filePath) throws IOException {
         JsonReader reader = new JsonReader(filePath);
         leaderboardModel.loadJson(reader.read());
@@ -158,7 +164,7 @@ public class ControllerCMD {
         writer.close();
     }
 
-    // EFFECTS: Reads in snake from JSON
+    // EFFECTS: Reads in snake from JSON.
     public void readInSnake() throws IOException {
         JsonReader reader = new JsonReader(SNAKE_FILE_PATH);
         snakeModel.loadJson(reader.read());

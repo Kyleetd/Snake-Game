@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-// Displays and controls buttons on side panel
+// Displays and controls buttons on side panel.
 public class ControlPanel extends JPanel {
 
     JButton startButton;
@@ -56,11 +56,14 @@ public class ControlPanel extends JPanel {
         disableStartButton();
     }
 
+    // EFFECTS: Resets and reloads ControlPanel.
     public void reloadPanel() {
         this.revalidate();
         this.repaint();
     }
 
+    // MODIFIES: This.
+    // EFFECTS: Sets control panel to appropriate state when snake is moving (start button disabled).
     public void updateButtonsGameStarted() {
         disableStartButton();
         enableStopButton();
@@ -68,6 +71,8 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
+    // MODIFIES: This.
+    // EFFECTS: Sets control panel to appropriate state when snake is not moving (stop button disabled).
     public void updateButtonsGameStopped() {
         enableStartButton();
         disableStopButton();
@@ -75,6 +80,7 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
+    // MODIFIES: This.
     // EFFECTS: Displays Start, Stop, and Quit buttons
     public void loadMainMenu() {
         this.removeAll();
@@ -84,7 +90,8 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
-    // EFFECTS: Displays SaveLabel with Yes and No buttons
+    // MODIFIES: This.
+    // EFFECTS: Displays SaveLabel with Yes and No buttons, clears text field.
     public void loadSaveMenu() {
         this.removeAll();
         this.add(saveLabel);
@@ -93,6 +100,7 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
+    // MODIFIES: This.
     // EFFECTS: Displays LoadLabel with Yes and No buttons
     public void loadLoadMenu() {
         this.removeAll();
@@ -102,15 +110,18 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
+    // MODIFIES: This.vv
     // EFFECTS: Displays EnterNameLabel with a text field and Submit button
     public void loadLeaderBoardMenu() {
         this.removeAll();
+        textField.setText("");
         this.add(enterNameLabel);
         this.add(textField);
         this.add(submitNameButton);
         reloadPanel();
     }
 
+    // MODIFIES: This.
     // EFFECTS: Displays submitToLeaderboardLabel with save or don't save options
     public void loadSaveOption() {
         this.removeAll();
@@ -120,99 +131,99 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: disables start button
+    // MODIFIES: This.
+    // EFFECTS: Disables start button.
     public void disableStartButton() {
         startButton.setEnabled(false);
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: disables stop button
+    // MODIFIES: This.
+    // EFFECTS: Disables stop button.
     public void disableStopButton() {
         stopButton.setEnabled(false);
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: disables quit button
+    // MODIFIES: This.
+    // EFFECTS: Disables quit button.
     public void disableQuitButton() {
         quitButton.setEnabled(false);
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: enables start button
+    // MODIFIES: This.
+    // EFFECTS: Enables start button.
     public void enableStartButton() {
         startButton.setEnabled(true);
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: enables stop button
+    // MODIFIES: This
+    // EFFECTS: Enables stop button.
     public void enableStopButton() {
         stopButton.setEnabled(true);
         reloadPanel();
     }
 
-    // MODIFIES: this
-    // EFFECTS: enables quit button
+    // MODIFIES: This.
+    // EFFECTS: Enables quit button.
     public void enableQuitButton() {
         quitButton.setEnabled(true);
         reloadPanel();
     }
 
-    // EFFECTS: returns user's name from user input
+    // EFFECTS: Returns user's name from user input.
     public String getNameFromTextField() {
         return textField.getText();
     }
 
-    // EFFECTS: registers when Start button is pressed
+    // EFFECTS: Registers when Start button is pressed.
     public void addStartButtonListener(ActionListener listenForStartButton) {
         startButton.addActionListener(listenForStartButton);
     }
 
-    // EFFECTS: registers when Stop button is pressed
+    // EFFECTS: Registers when Stop button is pressed.
     public void addStopButtonListener(ActionListener listenForStopButton) {
         stopButton.addActionListener(listenForStopButton);
     }
 
-    // EFFECTS: registers when Quit button is pressed
+    // EFFECTS: Registers when Quit button is pressed.
     public void addQuitButtonListener(ActionListener listenForQuitButton) {
         quitButton.addActionListener(listenForQuitButton);
     }
 
-    // EFFECTS: registers when Yes button is pressed
+    // EFFECTS: Registers when Yes button is pressed.
     public void addSaveYesButtonListener(ActionListener listenForSaveYesButton) {
         saveYesButton.addActionListener(listenForSaveYesButton);
     }
 
-    // EFFECTS: registers when No button is pressed
+    // EFFECTS: Registers when No button is pressed.
     public void addSaveNoButtonListener(ActionListener listenForSaveNoButton) {
         saveNoButton.addActionListener(listenForSaveNoButton);
     }
 
-    // EFFECTS: registers when Yes button is pressed
+    // EFFECTS: Registers when Yes button is pressed.
     public void addLoadYesButtonListener(ActionListener listenForLoadYesButton) {
         loadYesButton.addActionListener(listenForLoadYesButton);
     }
 
-    // EFFECTS: registers when No button is pressed
+    // EFFECTS: Registers when No button is pressed.
     public void addLoadNoButtonListener(ActionListener listenForLoadNoButton) {
         loadNoButton.addActionListener(listenForLoadNoButton);
     }
 
-    // EFFECTS: registers when Submit button is pressed
+    // EFFECTS: Registers when Submit button is pressed.
     public void addSubmitNameButtonListener(ActionListener listenSubmitNameButton) {
         submitNameButton.addActionListener(listenSubmitNameButton);
     }
 
-    // EFFECTS: registers when Save button is pressed
+    // EFFECTS: Registers when Save button is pressed.
     public void addSaveToLeaderboardButtonListener(ActionListener listenSaveToLeaderboardButton) {
         saveToLeaderboardButton.addActionListener(listenSaveToLeaderboardButton);
     }
 
-    // EFFECTS: registers when Don't Save button is pressed
+    // EFFECTS: Registers when Don't Save button is pressed.
     public void addDontSaveToLeaderboardButtonListener(ActionListener listenDontSaveToLeaderboardButton) {
         dontSaveToLeaderboardButton.addActionListener(listenDontSaveToLeaderboardButton);
     }
