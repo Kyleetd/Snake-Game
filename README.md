@@ -25,12 +25,16 @@ INFO: Leaderboard was loaded
 
 
 Sun Nov 27 19:21:10 PST 2022
-INFO: kylee's score was added to leaderboard.
+INFO: Kylee's score was added to leaderboard.
 
 
 Sun Nov 27 19:21:15 PST 2022
-INFO: kk's score was added to leaderboard.
+INFO: Lexy's score was added to leaderboard.
 
 
 Sun Nov 27 19:21:28 PST 2022
-INFO: fndjksl's score was added to leaderboard.
+INFO: Jaden's score was added to leaderboard.
+
+## *Phase 4: Task 3*
+To improve this project, I would remove nested classes. Specifically, all of the inner ButtonListener classes can be 
+extracted into a new ?class.? This ?class? would take an argument that indicates the action to be performed.

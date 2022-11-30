@@ -9,7 +9,6 @@ import persistence.JsonWriter;
 import ui.view.viewgui.ViewGUI;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -51,48 +50,41 @@ public class ControllerGUI {
         viewGUI.getControlPanel().addQuitButtonListener(new QuitButtonListener());
         viewGUI.getControlPanel().addLoadYesButtonListener(new LoadYesButtonListener());
         viewGUI.getControlPanel().addLoadNoButtonListener(new LoadNoButtonListener());
-        viewGUI.getControlPanel().addSaveYesButtonListener(new SaveYesButtonListener());
-        viewGUI.getControlPanel().addSaveNoButtonListener(new SaveNoButtonListener());
+        viewGUI.getControlPanel().addSaveYesButtonListener(new SaveSnakeButtonListener());
+        viewGUI.getControlPanel().addSaveNoButtonListener(new DontSaveSnakeButtonListener());
         viewGUI.getControlPanel().addSubmitNameButtonListener(new SubmitNameButtonListener());
         viewGUI.getControlPanel().addSaveToLeaderboardButtonListener(new SaveToLeaderboardButtonListener());
         viewGUI.getControlPanel().addDontSaveToLeaderboardButtonListener(new DontSaveToLeaderboardButtonListener());
         viewGUI.getLeaderboardPanel().addLoadButtonListener(new LoadButtonListener());
         viewGUI.getLeaderboardPanel().addDontLoadButtonListener(new DontLoadButtonListener());
+        viewGUI.getLeaderboardPanel().addSaveButtonListener(new SaveLeaderboardButtonListener());
+        viewGUI.getLeaderboardPanel().addDontSaveButtonListener(new DontSaveLeaderboardButtonListener());
+        viewGUI.getLeaderboardPanel().addClearLeaderboardListener(new ClearLeaderboardListener());
 
         // ADD KEY BINDINGS
         addKeyBindings();
     }
 
     public void addKeyBindings() {
-
-        viewGUI.getControlPanel()
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        viewGUI.getControlPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("UP"),"up");
-        viewGUI.getControlPanel()
-                .getActionMap()
+        viewGUI.getControlPanel().getActionMap()
                 .put("up", new UpAction());
 
-        viewGUI.getControlPanel()
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        viewGUI.getControlPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("DOWN"),"down");
-        viewGUI.getControlPanel()
-                .getActionMap()
+        viewGUI.getControlPanel().getActionMap()
                 .put("down", new DownAction());
 
-        viewGUI.getControlPanel()
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        viewGUI.getControlPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("LEFT"),"left");
-        viewGUI.getControlPanel()
-                .getActionMap()
+        viewGUI.getControlPanel().getActionMap()
                 .put("left", new LeftAction());
 
-        viewGUI.getControlPanel()
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        viewGUI.getControlPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("RIGHT"),"right");
-        viewGUI.getControlPanel()
-                .getActionMap()
+        viewGUI.getControlPanel().getActionMap()
                 .put("right", new RightAction());
-
     }
 
     // MODIFIES: SnakePanel.
@@ -147,6 +139,7 @@ public class ControllerGUI {
 
     // EFFECTS: Creates a timer that executes game updates at time intervals of GAME_SPEED.
     //          When this timer is running the game is running.
+    //          Stop timer if game is over, reset snake direction for new game.
     private void createGameTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -159,8 +152,9 @@ public class ControllerGUI {
                     // stop timer if snake is dead
                     if (snakeModel.isGameOver()) {
                         timer.cancel();
-                        viewGUI.getControlPanel().loadSaveOption();
+                        viewGUI.getControlPanel().loadSaveScoreOption();
                         viewGUI.getControlPanel().reloadPanel();
+                        newDirection = 'r';
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -260,9 +254,12 @@ public class ControllerGUI {
 
     class QuitButtonListener implements ActionListener {
 
-        // EFFECTS: Prompts user to save game when quit button is pressed
+        // EFFECTS: Prompts user to save game and leaderboard when quit button is pressed
         public void actionPerformed(ActionEvent e) {
             viewGUI.getControlPanel().loadSaveMenu();
+            viewGUI.getControlPanel().disableSaveYesButton();
+            viewGUI.getControlPanel().disableSaveNoButton();
+            viewGUI.getLeaderboardPanel().loadSaveLeaderboardOption();
         }
     }
 
@@ -289,7 +286,7 @@ public class ControllerGUI {
         }
     }
 
-    class SaveYesButtonListener implements ActionListener {
+    class SaveSnakeButtonListener implements ActionListener {
 
         // EFFECTS: Writes snake game to JSON, quits application
         public void actionPerformed(ActionEvent e) {
@@ -299,7 +296,7 @@ public class ControllerGUI {
         }
     }
 
-    class SaveNoButtonListener implements ActionListener {
+    class DontSaveSnakeButtonListener implements ActionListener {
 
         // EFFECTS: Quits application
         public void actionPerformed(ActionEvent e) {
@@ -312,7 +309,7 @@ public class ControllerGUI {
 
         // EFFECTS: Loads leaderboard menu where user can input name
         public void actionPerformed(ActionEvent e) {
-            viewGUI.getControlPanel().loadLeaderBoardMenu();
+            viewGUI.getControlPanel().loadLeaderboardMenu();
         }
     }
 
@@ -350,6 +347,41 @@ public class ControllerGUI {
             viewGUI.getLeaderboardPanel().loadLeaderboard();
 
             viewGUI.getControlPanel().updateButtonsGameStopped();
+        }
+    }
+
+    class SaveLeaderboardButtonListener implements ActionListener {
+
+        // EFFECTS: Updates Leaderboard Json file
+        public void actionPerformed(ActionEvent e) {
+            writeOutLeaderboardModelToFile();
+            viewGUI.getLeaderboardPanel().loadLeaderboard();
+
+            viewGUI.getControlPanel().enableSaveYesButton();
+            viewGUI.getControlPanel().enableSaveNoButton();
+        }
+    }
+
+    class DontSaveLeaderboardButtonListener implements ActionListener {
+
+        // EFFECTS: Clears Leaderboard, updates Leaderboard Json file
+        public void actionPerformed(ActionEvent e) {
+            leaderboardModel.clearLeaderboard();
+            writeOutLeaderboardModelToFile();
+            viewGUI.getLeaderboardPanel().loadLeaderboard();
+
+            viewGUI.getControlPanel().enableSaveYesButton();
+            viewGUI.getControlPanel().enableSaveNoButton();
+        }
+    }
+
+    class ClearLeaderboardListener implements ActionListener {
+
+        // EFFECTS: Clears Leaderboard, updates Leaderboard Json file
+        public void actionPerformed(ActionEvent e) {
+            leaderboardModel.clearLeaderboard();
+            writeOutLeaderboardModelToFile();
+            viewGUI.getLeaderboardPanel().loadLeaderboard();
         }
     }
 

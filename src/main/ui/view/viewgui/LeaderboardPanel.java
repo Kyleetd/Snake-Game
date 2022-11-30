@@ -10,14 +10,19 @@ public class LeaderboardPanel extends JPanel {
 
     JLabel title;
     JLabel[] leaderboard;
-    JButton viewLeaderboardButton;
 
     JLabel loadLeaderboardLabel;
     JButton loadButton;
     JButton dontLoadButton;
 
+    JLabel saveLeaderboardLabel;
+    JButton saveButton;
+    JButton dontSaveButton;
+
+    JButton clearLeaderboardButton;
+
     public LeaderboardPanel() {
-        this.setLayout(new GridLayout(11, 1));
+        this.setLayout(new GridLayout(12, 1));
         this.setBackground(Color.white);
         this.setFocusable(false);
 
@@ -27,6 +32,12 @@ public class LeaderboardPanel extends JPanel {
         loadLeaderboardLabel = new JLabel("Load Previous Leaderboard?", SwingConstants.CENTER);
         loadButton = new JButton("Load");
         dontLoadButton = new JButton("Don't Load");
+
+        saveLeaderboardLabel = new JLabel("Save Leaderboard?", SwingConstants.CENTER);
+        saveButton = new JButton("Save");
+        dontSaveButton = new JButton("Don't Save");
+
+        clearLeaderboardButton = new JButton("Clear Leaderboard");
 
         loadLeaderboardOption();
     }
@@ -50,12 +61,23 @@ public class LeaderboardPanel extends JPanel {
     }
 
     // MODIFIES: This.
+    // EFFECTS: Displays saveLeaderboardLabel with save or don't save options.
+    public void loadSaveLeaderboardOption() {
+        this.removeAll();
+        this.add(saveLeaderboardLabel);
+        this.add(saveButton);
+        this.add(dontSaveButton);
+        reloadLeaderboard();
+    }
+
+    // MODIFIES: This.
     // EFFECTS: Creates Leaderboard in LeaderboardPanel.
     public void initializeLeaderboard() {
         for (int i = 0; i < leaderboard.length; i++) {
             leaderboard[i] = new JLabel("", SwingConstants.CENTER);
             this.add(leaderboard[i]);
         }
+        this.add(clearLeaderboardButton);
         reloadLeaderboard();
     }
 
@@ -74,11 +96,6 @@ public class LeaderboardPanel extends JPanel {
         this.repaint();
     }
 
-    // EFFECTS: Registers when View Leaderboard button is pressed.
-    public void addViewLeaderboardButtonListener(ActionListener listenViewLeaderboardButton) {
-        viewLeaderboardButton.addActionListener(listenViewLeaderboardButton);
-    }
-
     // EFFECTS: Registers when Load button is pressed.
     public void addLoadButtonListener(ActionListener listenLoadButton) {
         loadButton.addActionListener(listenLoadButton);
@@ -87,5 +104,20 @@ public class LeaderboardPanel extends JPanel {
     // EFFECTS: Registers when Don't Load button is pressed.
     public void addDontLoadButtonListener(ActionListener listenDontLoadButton) {
         dontLoadButton.addActionListener(listenDontLoadButton);
+    }
+
+    // EFFECTS: Registers when Save button is pressed.
+    public void addSaveButtonListener(ActionListener listenSaveButton) {
+        saveButton.addActionListener(listenSaveButton);
+    }
+
+    // EFFECTS: Registers when Clear Leaderbaord button is pressed.
+    public void addClearLeaderboardListener(ActionListener listenClearLeaderboardButton) {
+        clearLeaderboardButton.addActionListener(listenClearLeaderboardButton);
+    }
+
+    // EFFECTS: Registers when Don't Save button is pressed.
+    public void addDontSaveButtonListener(ActionListener listenDontSaveButton) {
+        dontSaveButton.addActionListener(listenDontSaveButton);
     }
 }

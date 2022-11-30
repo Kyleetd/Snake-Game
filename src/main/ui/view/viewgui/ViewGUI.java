@@ -1,8 +1,6 @@
 package ui.view.viewgui;
 
-import model.SnakeModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 // Creates main JFrame.

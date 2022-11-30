@@ -22,7 +22,7 @@ public class LeaderboardModel {
     // EFFECTS: Creates a new leaderboard entry and adds it to leaderboard.
     //          Sorts leaderboard and removes worst score if it contains more than 10 entries.
     //          Adds Event to EventLog.
-    public void addEntry(String name, int score, boolean fromJSON) {
+    public void addEntry(String name, int score, boolean fromJson) {
         LeaderboardEntry newEntry = new LeaderboardEntry(name, score);
         leaderboard.add(newEntry);
 
@@ -32,8 +32,9 @@ public class LeaderboardModel {
             leaderboard.remove(leaderboard.size() - 1);
         }
 
-        if (!fromJSON) {
-            EventLog.getInstance().logEvent(new Event("INFO: " + name + "'s score was added to leaderboard."));
+        if (!fromJson) {
+            EventLog.getInstance().logEvent(
+                    new Event("INFO: " + name + "'s score was added to leaderboard."));
         }
     }
 

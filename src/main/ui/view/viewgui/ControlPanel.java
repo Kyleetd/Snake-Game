@@ -51,7 +51,7 @@ public class ControlPanel extends JPanel {
         saveToLeaderboardButton = new JButton("Save");
         dontSaveToLeaderboardButton = new JButton("Don't Save");
 
-        loadLoadMenu();
+        loadLoadSnakeMenu();
         disableStopButton();
         disableStartButton();
     }
@@ -102,7 +102,7 @@ public class ControlPanel extends JPanel {
 
     // MODIFIES: This.
     // EFFECTS: Displays LoadLabel with Yes and No buttons
-    public void loadLoadMenu() {
+    public void loadLoadSnakeMenu() {
         this.removeAll();
         this.add(loadLabel);
         this.add(loadYesButton);
@@ -110,9 +110,9 @@ public class ControlPanel extends JPanel {
         reloadPanel();
     }
 
-    // MODIFIES: This.vv
+    // MODIFIES: This.
     // EFFECTS: Displays EnterNameLabel with a text field and Submit button
-    public void loadLeaderBoardMenu() {
+    public void loadLeaderboardMenu() {
         this.removeAll();
         textField.setText("");
         this.add(enterNameLabel);
@@ -123,7 +123,7 @@ public class ControlPanel extends JPanel {
 
     // MODIFIES: This.
     // EFFECTS: Displays submitToLeaderboardLabel with save or don't save options
-    public void loadSaveOption() {
+    public void loadSaveScoreOption() {
         this.removeAll();
         this.add(submitToLeaderboardLabel);
         this.add(saveToLeaderboardButton);
@@ -153,6 +153,20 @@ public class ControlPanel extends JPanel {
     }
 
     // MODIFIES: This.
+    // EFFECTS: Disables saveYes button.
+    public void disableSaveYesButton() {
+        saveYesButton.setEnabled(false);
+        reloadPanel();
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Disables saveNo button.
+    public void disableSaveNoButton() {
+        saveNoButton.setEnabled(false);
+        reloadPanel();
+    }
+
+    // MODIFIES: This.
     // EFFECTS: Enables start button.
     public void enableStartButton() {
         startButton.setEnabled(true);
@@ -170,6 +184,20 @@ public class ControlPanel extends JPanel {
     // EFFECTS: Enables quit button.
     public void enableQuitButton() {
         quitButton.setEnabled(true);
+        reloadPanel();
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Enables saveYes button.
+    public void enableSaveYesButton() {
+        saveYesButton.setEnabled(true);
+        reloadPanel();
+    }
+
+    // MODIFIES: This.
+    // EFFECTS: Enables saveNo button.
+    public void enableSaveNoButton() {
+        saveNoButton.setEnabled(true);
         reloadPanel();
     }
 
