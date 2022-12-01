@@ -36,5 +36,9 @@ Sun Nov 27 19:21:28 PST 2022
 INFO: Jaden's score was added to leaderboard.
 
 ## *Phase 4: Task 3*
-To improve this project, I would remove nested classes. Specifically, all of the inner ButtonListener classes can be 
-extracted into a new ?class.? This ?class? would take an argument that indicates the action to be performed.
+To improve this project, I would remove the nested button listener classes in the ControllerGUI class. Specifically, 
+all of the nested ActionListener classes can be replaced with lambda expressions.
+
+In terms of the four AbstractAction listeners that control the movement of the snake through the arrow keys, there 
+could be a single class that extends AbstractAction with an actionPerformed method. This actionPerformed 
+method would call one of the four other methods in the class depending on the key (the ActionEvent) that occurred.
