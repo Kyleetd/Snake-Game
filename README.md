@@ -23,18 +23,6 @@ The application will create a game that simulates a snake slithering around a bo
 Sun Nov 27 19:20:59 PST 2022
 INFO: Leaderboard was loaded
 
-
-Sun Nov 27 19:21:10 PST 2022
-INFO: Kylee's score was added to leaderboard.
-
-
-Sun Nov 27 19:21:15 PST 2022
-INFO: Lexy's score was added to leaderboard.
-
-
-Sun Nov 27 19:21:28 PST 2022
-INFO: Jaden's score was added to leaderboard.
-
 ## *Phase 4: Task 3*
 To improve this project, I would remove the nested button listener classes in the ControllerGUI class. Specifically, 
 all of the nested ActionListener classes can be replaced with lambda expressions.
