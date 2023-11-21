@@ -19,10 +19,6 @@ The application will create a game that simulates a snake slithering around a bo
 - As a user, I want to view the top ten scores on the leaderboard.
 - As a user, I want to choose whether to load or clear the previous leaderboard.
 
-## *Phase 4: Task 2*
-Sun Nov 27 19:20:59 PST 2022
-INFO: Leaderboard was loaded
-
 ## *Phase 4: Task 3*
 To improve this project, I would remove the nested button listener classes in the ControllerGUI class. Specifically, 
 all of the nested ActionListener classes can be replaced with lambda expressions.
